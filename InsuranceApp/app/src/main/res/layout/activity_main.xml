@@ -5,6 +5,10 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#9C27B0"
+    android:backgroundTint="#3F51B5"
+    android:backgroundTintMode="screen"
+    android:hapticFeedbackEnabled="true"
     tools:context=".MainActivity">
 
     <TextView
@@ -12,6 +16,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Md Kutub Uddin"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,9 +27,13 @@
         android:id="@+id/btnHome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="#DBEF1A"
+        android:backgroundTint="#FF5722"
+        android:backgroundTintMode="screen"
         android:text="Home"
         android:textColorHint="#03A9F4"
         android:textColorLink="#9E17B5"
+        android:textStyle="bold|italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.511"
