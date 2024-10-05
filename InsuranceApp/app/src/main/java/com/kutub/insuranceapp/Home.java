@@ -45,7 +45,7 @@ public class Home extends AppCompatActivity {
                 String email = editTextEmail.getText().toString();
                 String phone = editTextPhone.getText().toString();
 
-               
+
                 int selectedGenderId = radioGroupGender.getCheckedRadioButtonId();
                 RadioButton selectedGender = findViewById(selectedGenderId);
                 String gender = selectedGender != null ? selectedGender.getText().toString() : "Not Selected";
