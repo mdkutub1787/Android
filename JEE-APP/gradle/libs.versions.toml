@@ -1,4 +1,5 @@
 [versions]
+sdp = "1.1.1"
 agp = "8.7.0"
 kotlin = "2.0.0"
 coreKtx = "1.13.1"
@@ -14,6 +15,8 @@ activity = "1.9.2"
 constraintlayout = "2.1.4"
 
 [libraries]
+intuit-sdp = { group = "com.intuit.sdp", name = "sdp-android", version.ref = "sdp" }
+
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
