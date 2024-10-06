@@ -10,11 +10,11 @@
 
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="414dp"
-        android:layout_height="725dp"
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo6"
-        tools:layout_editor_absoluteX="-2dp" />
+        app:srcCompat="@drawable/logo6" />
 </androidx.constraintlayout.widget.ConstraintLayout>
