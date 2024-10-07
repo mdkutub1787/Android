@@ -34,13 +34,14 @@ public class MainActivity extends AppCompatActivity {
         zoomIn.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                Intent intent=new Intent(getApplicationContext(), Home.class);
-                startActivity(intent);
-                finish();
+
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
+                Intent intent=new Intent(getApplicationContext(), Home.class);
+                startActivity(intent);
+                finish();
 
             }
 
