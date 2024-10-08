@@ -25,7 +25,7 @@
             android:id="@+id/noticeNews"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Clubs Join Installation Ceremony &amp; Family Day 2023 "
+            android:text="Clubs Join Installation Ceremony &amp; Family Day 2024 "
             android:textSize="@dimen/_12ssp"
             />
 
