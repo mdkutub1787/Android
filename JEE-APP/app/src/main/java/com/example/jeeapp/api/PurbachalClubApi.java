@@ -8,7 +8,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.GET;
 
-public class PurbachalClubApi {
+public interface PurbachalClubApi {
 
     @GET("purbachal.php?action=read")
     Call<List<PurbachalModel>> getPurbachalModels();

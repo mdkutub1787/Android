@@ -1,5 +1,6 @@
 package com.example.jeeapp.adapter;
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -12,7 +13,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.jeeapp.model.PurbachalModel;
 import com.example.jeeapp.R;
 import com.example.jeeapp.model.NotificationModel;
 import com.example.jeeapp.model.PurbachalModel;
@@ -20,7 +20,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class PurbachalModelAdapter extends RecyclerView.Adapter<PurbachalModelAdapter.ViewHolder>{
+public class PurbachalModelAdapter extends RecyclerView.Adapter<PurbachalModelAdapter.ViewHolder> {
 
 
     private List<PurbachalModel> purbachalModelList;
@@ -47,7 +47,15 @@ public class PurbachalModelAdapter extends RecyclerView.Adapter<PurbachalModelAd
         PurbachalModel member = purbachalModelList.get(position);
         holder.bind(member);
 
-
+//        PurbachalModel  purbachalModel = purbachalModelList.get(position);
+//        holder.name.setText(purbachalModel.getName());
+//        holder.clubPosition.setText(purbachalModel.getClubPosition());
+//        holder.address1.setText(purbachalModel.getAddress1());
+//        holder.address2.setText(purbachalModel.getAddress2());
+//        holder.cell.setText(purbachalModel.getAddress2());
+//        holder.email.setText(purbachalModel.getAddress2());
+//        holder.membershipNo.setText(purbachalModel.getAddress2());
+//        holder.address2.setText(purbachalModel.getAddress2());
 
 
     }
@@ -118,7 +126,7 @@ public class PurbachalModelAdapter extends RecyclerView.Adapter<PurbachalModelAd
 
 
 
-            Picasso.get().load(imageUrlmember).into(memberImage);
+            Picasso .get().load(imageUrlmember).into(memberImage);
 
 
 

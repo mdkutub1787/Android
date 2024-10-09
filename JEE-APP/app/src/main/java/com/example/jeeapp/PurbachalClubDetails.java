@@ -11,6 +11,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.jeeapp.adapter.PurbachalModelAdapter;
+import com.example.jeeapp.api.PurbachalClubApi;
+import com.example.jeeapp.apiClient.ApiClient;
+import com.example.jeeapp.model.PurbachalModel;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PurbachalClubDetails extends AppCompatActivity {
 
