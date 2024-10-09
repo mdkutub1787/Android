@@ -28,7 +28,7 @@ import retrofit2.Response;
 
 public class Home extends AppCompatActivity {
 
-    private ImageView notification;
+    private ImageView notification, lionsClubs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +81,18 @@ public class Home extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent=new Intent(getApplicationContext(),Notification.class);
                 startActivity(intent);
+            }
+        });
+
+        // For Notification Image in Home
+        lionsClubs=findViewById(R.id.lionsClubs);
+
+        lionsClubs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(), LionsClubsDashboard.class);
+                startActivity(intent);
+
             }
         });
     }

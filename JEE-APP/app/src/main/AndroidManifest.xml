@@ -15,7 +15,10 @@
         android:theme="@style/Theme.JEEAPP"
         tools:targetApi="31">
         <activity
-            android:name=".LeoClabdashboard"
+            android:name=".PurbachalClubDetails"
+            android:exported="false" />
+        <activity
+            android:name=".LionsClubsDashboard"
             android:exported="false" />
         <activity
             android:name=".Notification"

@@ -200,7 +200,7 @@
                     android:padding="@dimen/_5sdp">
 
                     <ImageView
-                        android:id="@+id/directors"
+                        android:id="@+id/lionsClubs"
                         android:layout_width="@dimen/_50sdp"
                         android:layout_height="@dimen/_50sdp"
                         android:src="@drawable/logo5" />
