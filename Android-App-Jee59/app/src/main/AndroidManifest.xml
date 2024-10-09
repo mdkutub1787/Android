@@ -10,12 +10,15 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/logo"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.JEEAPP"
+        android:theme="@style/Theme.AndroidAppJee59"
         tools:targetApi="31">
         <activity
-            android:name=".LeoClabdashboard"
+            android:name=".PurbachalClubDetails"
+            android:exported="false" />
+        <activity
+            android:name=".LionsClubsDashboard"
             android:exported="false" />
         <activity
             android:name=".Notification"
@@ -27,7 +30,7 @@
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.JEEAPP">
+            android:theme="@style/Theme.AndroidAppJee59">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

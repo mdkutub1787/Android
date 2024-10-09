@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "139844137227",
+    "project_id": "java-project-fb",
+    "storage_bucket": "java-project-fb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:139844137227:android:267358c0ebf8ba774eb20e",
+        "android_client_info": {
+          "package_name": "com.example.javaprojectfb"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCP-BIyQXp8PHDzjEeCz4biSpaftCCZU4o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
