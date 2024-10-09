@@ -75,14 +75,18 @@ public class Home extends AppCompatActivity {
             }
         });
 
+        // For Notification Image in Home
         notification=findViewById(R.id.notification);
+
         notification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(),Notification.class);
+                Intent intent=new Intent(getApplicationContext(), Notification.class);
                 startActivity(intent);
+
             }
         });
+
 
         // For Notification Image in Home
         lionsClubs=findViewById(R.id.lionsClubs);
@@ -95,5 +99,6 @@ public class Home extends AppCompatActivity {
 
             }
         });
+
     }
 }
