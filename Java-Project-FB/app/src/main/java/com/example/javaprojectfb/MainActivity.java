@@ -52,6 +52,10 @@ public class MainActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(editTextId.getText().toString().isEmpty() || editTextName.getText().toString().isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 int id = Integer.parseInt(editTextId.getText().toString());
                 String name = editTextName.getText().toString();
                 HashMap<String, Object> hashMap = new HashMap<>();
@@ -78,8 +82,12 @@ public class MainActivity extends AppCompatActivity {
         btnShow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(editTextId.getText().toString().isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Please enter an ID", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 int id = Integer.parseInt(editTextId.getText().toString());
-                databaseReference.child(String.valueOf(id)).addValueEventListener(new ValueEventListener() {
+                databaseReference.child(String.valueOf(id)).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
@@ -107,6 +115,10 @@ public class MainActivity extends AppCompatActivity {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(editTextId.getText().toString().isEmpty() || editTextName.getText().toString().isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 int id = Integer.parseInt(editTextId.getText().toString());
                 String name = editTextName.getText().toString();
 
@@ -134,6 +146,10 @@ public class MainActivity extends AppCompatActivity {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(editTextId.getText().toString().isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Please enter an ID", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 int id = Integer.parseInt(editTextId.getText().toString());
                 databaseReference.child(String.valueOf(id)).removeValue()
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
