@@ -24,10 +24,10 @@ import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText editTextId,editTextName;
-    private Button btnSave,btnShow,btnUpdate,btnDelete;
+    private EditText editTextId, editTextName;
+    private Button btnSave, btnShow, btnUpdate, btnDelete;
 
-    private TextView textViewId,textViewName;
+    private TextView textViewId, textViewName;
 
     private DatabaseReference databaseReference;
 
@@ -37,15 +37,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+        editTextId = findViewById(R.id.editTextId);
         editTextName = findViewById(R.id.editTextName);
+        textViewId = findViewById(R.id.textViewId);
+        textViewName = findViewById(R.id.textViewName);
         btnSave = findViewById(R.id.btnSave);
+        btnShow = findViewById(R.id.btnShow);
+        btnUpdate = findViewById(R.id.btnUpdate);
+        btnDelete = findViewById(R.id.btnDelete);
 
         databaseReference = FirebaseDatabase.getInstance().getReference().child("MyDB");
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String data = editTextName.getText().toString();
+//                String data = editTextName.getText().toString();
+                int id = Integer.parseInt(editTextId.getText().toString());
+                String name = editTextName.getText().toString();
                 databaseReference.setValue(data).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
@@ -60,8 +68,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        textView = findViewById(R.id.textView);
-        btnShow = findViewById(R.id.btnShow);
 
         btnShow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,11 +75,10 @@ public class MainActivity extends AppCompatActivity {
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()){
-                            String showdata=snapshot.getValue().toString();
-                            textView.setText(showdata);
-                        }
-                        else {
+                        if (snapshot.exists()) {
+                            String showdata = snapshot.getValue().toString();
+                            textViewName.setText(showdata);
+                        } else {
                             Toast.makeText(MainActivity.this, "No Data ", Toast.LENGTH_SHORT).show();
                         }
                     }
