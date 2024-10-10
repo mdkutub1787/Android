@@ -23,6 +23,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -56,9 +58,9 @@ public class MainActivity extends AppCompatActivity {
 
                 int id = Integer.parseInt(editTextId.getText().toString());
                 String name = editTextName.getText().toString();
-                HashMap hashMap=new HashMap();
-                hashMap.put("id",id);
-                hashMap.put("name",name);
+                HashMap hashMap = new HashMap();
+                hashMap.put("id", id);
+                hashMap.put("name", name);
 
                 databaseReference.child("user1").setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -78,12 +80,18 @@ public class MainActivity extends AppCompatActivity {
         btnShow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                databaseReference.addValueEventListener(new ValueEventListener() {
+                databaseReference.child("user1").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-                            String showdata = snapshot.getValue().toString();
-                            textViewName.setText(showdata);
+
+                            Map<String, Objects> map = (Map<String, Objects>) snapshot.getValue();
+                            Objects id = map.get("id");
+                            String name = map.get("name").toString();
+
+                            textViewId.setText("" + id);
+                            textViewName.setText("name");
+
                         } else {
                             Toast.makeText(MainActivity.this, "No Data ", Toast.LENGTH_SHORT).show();
                         }
