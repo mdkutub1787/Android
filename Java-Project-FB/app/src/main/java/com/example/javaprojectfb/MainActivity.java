@@ -24,11 +24,11 @@ import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText editText;
-    private Button btnSave;
+    private EditText editTextId,editTextName;
+    private Button btnSave,btnShow,btnUpdate,btnDelete;
 
-    private TextView textView;
-    private Button btnShow;
+    private TextView textViewId,textViewName;
+
     private DatabaseReference databaseReference;
 
     @Override
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        editText = findViewById(R.id.editText);
+        editTextName = findViewById(R.id.editTextName);
         btnSave = findViewById(R.id.btnSave);
 
         databaseReference = FirebaseDatabase.getInstance().getReference().child("MyDB");
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String data = editText.getText().toString();
+                String data = editTextName.getText().toString();
                 databaseReference.setValue(data).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
