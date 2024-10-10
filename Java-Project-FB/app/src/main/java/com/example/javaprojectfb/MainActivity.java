@@ -22,6 +22,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+
 public class MainActivity extends AppCompatActivity {
 
     private EditText editTextId, editTextName;
@@ -51,10 +53,14 @@ public class MainActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                String data = editTextName.getText().toString();
+
                 int id = Integer.parseInt(editTextId.getText().toString());
                 String name = editTextName.getText().toString();
-                databaseReference.setValue(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+                HashMap hashMap=new HashMap();
+                hashMap.put("id",id);
+                hashMap.put("name",name);
+
+                databaseReference.child("user1").setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
                         Toast.makeText(MainActivity.this, "Data Add Successfully", Toast.LENGTH_SHORT).show();
