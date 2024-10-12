@@ -62,18 +62,6 @@
             android:maxLines="1"
             android:layout_marginBottom="12dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/recLang"
-            android:text="Language"
-            android:textColor="@color/lavender"
-            android:textSize="14sp"
-            android:layout_below="@id/recDesc"
-            android:layout_toEndOf="@id/recImage"
-            android:layout_marginStart="20dp"
-            android:layout_marginBottom="10dp"/>
-
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

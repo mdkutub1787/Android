@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "698379981781",
+    "firebase_url": "https://fb-crud-app-2054e-default-rtdb.firebaseio.com",
+    "project_id": "fb-crud-app-2054e",
+    "storage_bucket": "fb-crud-app-2054e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:698379981781:android:a5871007094df84385a35c",
+        "android_client_info": {
+          "package_name": "com.kutub.fbcrudapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpLRFjsyL5i7Q9U_2h-nPHW7-Q-Wq5WpE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
