@@ -20,8 +20,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.kutubuddin.myapplication.adapter.MyAdapter;
-import com.kutubuddin.myapplication.model.DataClass;
 
 
 import java.util.ArrayList;
