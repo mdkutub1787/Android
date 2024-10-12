@@ -37,6 +37,11 @@
             android:exported="true">
             <!-- Add intent-filters here if needed -->
         </activity>
+        <activity
+            android:name=".UpdateActivity"
+            android:exported="true">
+            <!-- Add intent-filters here if needed -->
+        </activity>
 
     </application>
 
