@@ -91,22 +91,7 @@ public class UploadActivity extends AppCompatActivity {
 
     // Save image and data
     public void saveData() {
-        // Validate if image is selected
-        if (uri == null) {
-            Toast.makeText(this, "Please select an image first", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
-        // Get the input from fields
-        String title = uploadTopic.getText().toString();
-        String desc = uploadDesc.getText().toString();
-        String lang = uploadLang.getText().toString();
-
-        // Validate if all fields are filled
-        if (title.isEmpty() || desc.isEmpty() || lang.isEmpty()) {
-            Toast.makeText(this, "Please fill all the fields", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
         // Firebase Storage Reference
         StorageReference storageReference = FirebaseStorage.getInstance().getReference()
