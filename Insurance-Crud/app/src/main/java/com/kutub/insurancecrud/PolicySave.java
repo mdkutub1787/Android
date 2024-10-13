@@ -116,7 +116,7 @@ public class PolicySave extends AppCompatActivity {
         // Corrected order and parameter types for PolicyModel constructor
         PolicyModel policyData = new PolicyModel(nextPolicyId, dateValue, bank, holder, addr, stock, insuredSum);
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss", Locale.getDefault());
         String currentDate = simpleDateFormat.format(Calendar.getInstance().getTime());
 
         FirebaseDatabase.getInstance().getReference("Policies").child(currentDate)
