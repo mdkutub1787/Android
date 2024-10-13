@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".Save">
 
     <androidx.cardview.widget.CardView
@@ -28,12 +27,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Save  Data"
+                android:text="Save Data"
                 android:textSize="30sp"
                 android:textAlignment="center"
                 android:textColor="@color/lavender"/>
-
-
 
             <EditText
                 android:layout_width="match_parent"
@@ -43,9 +40,10 @@
                 android:background="@drawable/lavender_border"
                 android:layout_marginTop="20dp"
                 android:padding="16dp"
-                android:hint="Enter id "
+                android:hint="Auto-increment ID"
                 android:gravity="start|center_vertical"
-                android:textColor="@color/lavender"/>
+                android:textColor="@color/lavender"
+                android:focusable="false" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -54,7 +52,7 @@
                 android:background="@drawable/lavender_border"
                 android:layout_marginTop="20dp"
                 android:padding="16dp"
-                android:hint="Enter Bank Name "
+                android:hint="Enter Bank Name"
                 android:gravity="start|center_vertical"
                 android:textColor="@color/lavender"/>
 
@@ -65,7 +63,7 @@
                 android:background="@drawable/lavender_border"
                 android:layout_marginTop="20dp"
                 android:padding="16dp"
-                android:hint="Enter policy Hoder "
+                android:hint="Enter Policy Holder"
                 android:gravity="start|center_vertical"
                 android:textColor="@color/lavender"/>
 
@@ -76,11 +74,9 @@
                 android:background="@drawable/lavender_border"
                 android:layout_marginTop="20dp"
                 android:padding="16dp"
-                android:hint="Enter address"
+                android:hint="Enter Address"
                 android:gravity="start|center_vertical"
                 android:textColor="@color/lavender"/>
-
-
 
             <EditText
                 android:layout_width="match_parent"
@@ -89,7 +85,7 @@
                 android:background="@drawable/lavender_border"
                 android:layout_marginTop="20dp"
                 android:padding="16dp"
-                android:hint="Enter stock Item "
+                android:hint="Enter Stock Item"
                 android:gravity="start|center_vertical"
                 android:textColor="@color/lavender"/>
 
@@ -100,26 +96,20 @@
                 android:background="@drawable/lavender_border"
                 android:layout_marginTop="20dp"
                 android:padding="16dp"
+                android:hint="Enter Sum Insured"
                 android:inputType="number"
-                android:hint="Enter sumInsurd"
                 android:gravity="start|center_vertical"
                 android:textColor="@color/lavender"/>
 
-
-
             <Button
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="Save"
                 android:id="@+id/saveButton"
-                android:textSize="18sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                app:cornerRadius="20dp"
-                android:background="@color/lavender"/>
-
+                android:background="@color/lavender"
+                android:text="Save Policy"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"/>
         </LinearLayout>
-
     </androidx.cardview.widget.CardView>
-
 </ScrollView>

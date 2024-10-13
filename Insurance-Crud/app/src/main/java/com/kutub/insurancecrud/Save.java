@@ -8,7 +8,11 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -21,7 +25,8 @@ public class Save extends AppCompatActivity {
 
     // Declare UI elements
     Button saveButton;
-    EditText id, bankName, policyHolder, address, stockItem, sumInsured;
+    EditText id, bankName, policyHolder, address, stockItem, sumInsurd;
+    private int nextPolicyId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +45,10 @@ public class Save extends AppCompatActivity {
         policyHolder = findViewById(R.id.policyHolder);
         address = findViewById(R.id.address);
         stockItem = findViewById(R.id.stockItem);
-        sumInsured = findViewById(R.id.sumInsurd); // Update to sumInsured
+        sumInsurd = findViewById(R.id.sumInsurd);
+
+        // Fetch the current max ID and set the next one
+        fetchNextPolicyId();
 
         // Save button onClickListener
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -51,16 +59,32 @@ public class Save extends AppCompatActivity {
         });
     }
 
+    // Method to fetch the next policy ID
+    private void fetchNextPolicyId() {
+        DatabaseReference policiesRef = FirebaseDatabase.getInstance().getReference("Policies");
+        policiesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                nextPolicyId = (int) dataSnapshot.getChildrenCount() + 1; // Incrementing for new ID
+                id.setText(String.valueOf(nextPolicyId)); // Set ID field with next policy ID
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(Save.this, "Failed to fetch ID", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     // Method to handle saving the data
     private void savePolicyData() {
-
         // Get values from fields
         String policyId = id.getText().toString().trim();
         String bank = bankName.getText().toString().trim();
         String holder = policyHolder.getText().toString().trim();
         String addr = address.getText().toString().trim();
         String stock = stockItem.getText().toString().trim();
-        String sum = sumInsured.getText().toString().trim();
+        String sum = sumInsurd.getText().toString().trim();
 
         // Data validation: Check if any field is empty
         if (policyId.isEmpty() || bank.isEmpty() || holder.isEmpty() ||
@@ -86,7 +110,7 @@ public class Save extends AppCompatActivity {
         dialog.show();
 
         // Create a PolicyDataClass object with the collected data
-        InsuranceModel policyData = new InsuranceModel(Integer.parseInt(policyId), bank, holder, addr, stock, insuredSum, ""); // Passing int insuredSum
+        InsuranceModel policyData = new InsuranceModel(nextPolicyId, bank, holder, addr, stock, insuredSum, "");
 
         // Generate a unique key based on the current date and time
         String currentDate = DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
@@ -119,11 +143,11 @@ public class Save extends AppCompatActivity {
 
     // Method to clear the input fields after saving
     private void clearFields() {
-        id.setText("");
         bankName.setText("");
         policyHolder.setText("");
         address.setText("");
         stockItem.setText("");
-        sumInsured.setText("");
+        sumInsurd.setText("");
+        fetchNextPolicyId(); // Reset ID for the next entry
     }
 }
