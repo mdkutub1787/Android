@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1047622212743",
+    "project_id": "insurance-crud-d9947",
+    "storage_bucket": "insurance-crud-d9947.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1047622212743:android:e3cf1901af27e2518f2c22",
+        "android_client_info": {
+          "package_name": "com.kutub.insurancecrud"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSy3hrNGxgZDStR_7u4WlEME_tc4EUi58"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
