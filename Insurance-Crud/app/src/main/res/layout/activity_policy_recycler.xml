@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/recCard"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="10dp"
+    android:layout_marginVertical="10dp"
+    android:layout_marginStart="12dp"
+    android:layout_marginEnd="12dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="8dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Bank Name -->
+        <TextView
+            android:id="@+id/bankName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:text="Bank Name"
+            android:textColor="@color/lavender" />
+
+        <!-- Policy Holder (below Bank Name) -->
+        <TextView
+            android:id="@+id/policyHolder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/bankName"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Policy Holder"
+            android:textColor="@color/lavender"
+            />
+
+        <!-- Address (below Policy Holder) -->
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/policyHolder"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Address"
+            android:textColor="@color/lavender"
+             />
+
+        <!-- Sum Insured (below Address) -->
+        <TextView
+            android:id="@+id/sumInsurd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/address"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Sum Insured"
+            android:textColor="@color/lavender"
+             />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
