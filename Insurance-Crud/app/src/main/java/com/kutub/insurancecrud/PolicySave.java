@@ -21,7 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import androidx.annotation.NonNull;
 import com.kutub.insurancecrud.model.PolicyModel;
-import java.text.DateFormat;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -39,7 +39,7 @@ public class PolicySave extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_policysave);
+        setContentView(R.layout.activity_policy_save);
 
         saveButton = findViewById(R.id.saveButton);
         id = findViewById(R.id.id);
