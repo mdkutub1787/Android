@@ -7,7 +7,7 @@ public class InsurenceModel {
     private String policyHolder;
     private String address;
     private String stockItem;
-    private String sumInsurd;
+    private int sumInsurd;
     private String key;
 
     // Default constructor
@@ -15,13 +15,13 @@ public class InsurenceModel {
     }
 
     // Constructor with all fields
-    public InsurenceModel(int id, String bankName, String policyHolder, String address, String stockItem, String sumInsurd, String key) {
+    public InsurenceModel(int id, String bankName, String policyHolder, String address, String stockItem, int sumInsurd, String key) { // Updated type of sumInsurd
         this.id = id;
         this.bankName = bankName;
         this.policyHolder = policyHolder;
         this.address = address;
         this.stockItem = stockItem;
-        this.sumInsurd = sumInsurd;
+        this.sumInsurd = sumInsurd; // Updated
         this.key = key;
     }
 
@@ -75,12 +75,12 @@ public class InsurenceModel {
         this.stockItem = stockItem;
     }
 
-    // Getter and setter for sumInsurd
-    public String getSumInsurd() {
+    // Getter and setter for sumInsurd 
+    public int getSumInsurd() {
         return sumInsurd;
     }
 
-    public void setSumInsurd(String sumInsurd) {
+    public void setSumInsurd(int sumInsurd) {
         this.sumInsurd = sumInsurd;
     }
 
