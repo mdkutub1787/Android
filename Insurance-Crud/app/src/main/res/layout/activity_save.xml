@@ -60,6 +60,17 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:id="@+id/policyHolder"
+                android:background="@drawable/lavender_border"
+                android:layout_marginTop="20dp"
+                android:padding="16dp"
+                android:hint="Enter policy Hoder "
+                android:gravity="start|center_vertical"
+                android:textColor="@color/lavender"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:id="@+id/address"
                 android:background="@drawable/lavender_border"
                 android:layout_marginTop="20dp"
@@ -67,6 +78,8 @@
                 android:hint="Enter address"
                 android:gravity="start|center_vertical"
                 android:textColor="@color/lavender"/>
+
+
 
             <EditText
                 android:layout_width="match_parent"
