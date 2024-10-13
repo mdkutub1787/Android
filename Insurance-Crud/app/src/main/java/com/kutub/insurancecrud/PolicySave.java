@@ -1,56 +1,66 @@
 package com.kutub.insurancecrud;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import androidx.annotation.NonNull;
 import com.kutub.insurancecrud.model.PolicyModel;
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class PolicySave extends AppCompatActivity {
 
-    // Declare UI elements
-    Button saveButton;
-    EditText id, bankName, policyHolder, address, stockItem, sumInsurd;
     private int nextPolicyId;
+    private Button saveButton;
+    private EditText id, date, bankName, policyHolder, address, stockItem, sumInsured;
+
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Enable edge-to-edge layout
         EdgeToEdge.enable(this);
-
-        // Set the layout for this activity
         setContentView(R.layout.activity_policysave);
 
-        // Initialize UI elements
         saveButton = findViewById(R.id.saveButton);
         id = findViewById(R.id.id);
+        date = findViewById(R.id.date);
         bankName = findViewById(R.id.bankName);
         policyHolder = findViewById(R.id.policyHolder);
         address = findViewById(R.id.address);
         stockItem = findViewById(R.id.stockItem);
-        sumInsurd = findViewById(R.id.sumInsurd);
+        sumInsured = findViewById(R.id.sumInsurd);
 
-        // Fetch the current max ID and set the next one
         fetchNextPolicyId();
+        setCurrentDate();
 
-        // PolicySave button onClickListener
+        // Set OnClickListener for date EditText
+        date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog();
+            }
+        });
+
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,14 +69,13 @@ public class PolicySave extends AppCompatActivity {
         });
     }
 
-    // Method to fetch the next policy ID
     private void fetchNextPolicyId() {
         DatabaseReference policiesRef = FirebaseDatabase.getInstance().getReference("Policies");
         policiesRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 nextPolicyId = (int) dataSnapshot.getChildrenCount() + 1; // Incrementing for new ID
-                id.setText(String.valueOf(nextPolicyId)); // Set ID field with next policy ID
+                id.setText(String.valueOf(nextPolicyId));
             }
 
             @Override
@@ -76,78 +85,116 @@ public class PolicySave extends AppCompatActivity {
         });
     }
 
-    // Method to handle saving the data
     private void savePolicyData() {
-        // Get values from fields
         String policyId = id.getText().toString().trim();
         String bank = bankName.getText().toString().trim();
         String holder = policyHolder.getText().toString().trim();
         String addr = address.getText().toString().trim();
         String stock = stockItem.getText().toString().trim();
-        String sum = sumInsurd.getText().toString().trim();
+        String sum = sumInsured.getText().toString().trim();
+        String dateValue = date.getText().toString().trim();
 
-        // Data validation: Check if any field is empty
-        if (policyId.isEmpty() || bank.isEmpty() || holder.isEmpty() ||
-                addr.isEmpty() || stock.isEmpty() || sum.isEmpty()) {
-            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+        if (!validateFields(policyId, bank, holder, addr, stock, sum) || !isValidDate(dateValue)) {
+            Toast.makeText(this, "Please fill all fields with valid data", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Convert sumInsured from String to int
         int insuredSum;
         try {
-            insuredSum = Integer.parseInt(sum); // Convert sum to int
+            insuredSum = Integer.parseInt(sum);  // Parse the sum insured as int
         } catch (NumberFormatException e) {
             Toast.makeText(this, "Invalid sum insured", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Show progress dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(PolicySave.this);
         builder.setCancelable(false);
-        builder.setView(R.layout.progress_layout); // Ensure you have a layout for progress
+        builder.setView(R.layout.progress_layout);
         AlertDialog dialog = builder.create();
         dialog.show();
 
-        // Create a PolicyDataClass object with the collected data
-        PolicyModel policyData = new PolicyModel(nextPolicyId, bank, holder, addr, stock, insuredSum, "");
+        // Corrected order and parameter types for PolicyModel constructor
+        PolicyModel policyData = new PolicyModel(nextPolicyId, dateValue, bank, holder, addr, stock, insuredSum);
 
-        // Generate a unique key based on the current date and time
-        String currentDate = DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String currentDate = simpleDateFormat.format(Calendar.getInstance().getTime());
 
-        // PolicySave data to Firebase Database under "Policies"
         FirebaseDatabase.getInstance().getReference("Policies").child(currentDate)
                 .setValue(policyData).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            // Success message and finish activity
                             Toast.makeText(PolicySave.this, "Policy Data Saved Successfully", Toast.LENGTH_SHORT).show();
-                            clearFields();  // Clear input fields after successful save
-                            finish();  // Close the activity
+                            clearFields();
+                            finish();
                         } else {
-                            // Handle any failure in the database update process
-                            Toast.makeText(PolicySave.this, "Data PolicySave Failed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PolicySave.this, "Policy save failed", Toast.LENGTH_SHORT).show();
                         }
-                        dialog.dismiss(); // Dismiss dialog after operation
+                        dialog.dismiss();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        // Show error message
                         Toast.makeText(PolicySave.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                        dialog.dismiss(); // Dismiss dialog on error
+                        dialog.dismiss();
                     }
                 });
     }
 
-    // Method to clear the input fields after saving
     private void clearFields() {
         bankName.setText("");
         policyHolder.setText("");
         address.setText("");
         stockItem.setText("");
-        sumInsurd.setText("");
-        fetchNextPolicyId(); // Reset ID for the next entry
+        sumInsured.setText("");
+        fetchNextPolicyId();
+        setCurrentDate();
+    }
+
+    private boolean validateFields(String... fields) {
+        for (String field : fields) {
+            if (TextUtils.isEmpty(field)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isValidDate(String dateStr) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+        dateFormat.setLenient(false);
+        try {
+            dateFormat.parse(dateStr);
+            return true;
+        } catch (ParseException e) {
+            return false;
+        }
+    }
+
+    private void setCurrentDate() {
+        final Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        String formattedDate = String.format("%04d-%02d-%02d", year, month + 1, day);
+        date.setText(formattedDate);
+    }
+
+    private void showDatePickerDialog() {
+        final Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(PolicySave.this,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDay) {
+                        String formattedDate = String.format("%04d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay);
+                        date.setText(formattedDate);
+                    }
+                }, year, month, day);
+        datePickerDialog.show();
     }
 }

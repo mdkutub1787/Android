@@ -1,36 +1,36 @@
 package com.kutub.insurancecrud.model;
 
+import java.util.Date;
+
 public class PolicyModel {
 
     private int id;
+    private String date;
     private String bankName;
     private String policyHolder;
     private String address;
     private String stockItem;
     private int sumInsurd;
-    private String key;
+
 
     // Default constructor
     public PolicyModel() {
     }
 
-    // Constructor with all fields
-    public PolicyModel(int id, String bankName, String policyHolder, String address, String stockItem, int sumInsurd, String key) { // Updated type of sumInsurd
-        this.id = id;
-        this.bankName = bankName;
-        this.policyHolder = policyHolder;
-        this.address = address;
-        this.stockItem = stockItem;
-        this.sumInsurd = sumInsurd; // Updated
-        this.key = key;
-    }
-
-    // Constructor with only id
     public PolicyModel(int id) {
         this.id = id;
     }
 
-    // Getter and setter for id
+    public PolicyModel(int id, String date, String bankName, String policyHolder, String address, String stockItem, int sumInsurd) {
+        this.id = id;
+        this.date = date;
+        this.bankName = bankName;
+        this.policyHolder = policyHolder;
+        this.address = address;
+        this.stockItem = stockItem;
+        this.sumInsurd = sumInsurd;
+    }
+
     public int getId() {
         return id;
     }
@@ -39,7 +39,14 @@ public class PolicyModel {
         this.id = id;
     }
 
-    // Getter and setter for bankName
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     public String getBankName() {
         return bankName;
     }
@@ -48,7 +55,6 @@ public class PolicyModel {
         this.bankName = bankName;
     }
 
-    // Getter and setter for policyHolder
     public String getPolicyHolder() {
         return policyHolder;
     }
@@ -57,7 +63,6 @@ public class PolicyModel {
         this.policyHolder = policyHolder;
     }
 
-    // Getter and setter for address
     public String getAddress() {
         return address;
     }
@@ -66,7 +71,6 @@ public class PolicyModel {
         this.address = address;
     }
 
-    // Getter and setter for stockItem
     public String getStockItem() {
         return stockItem;
     }
@@ -75,21 +79,11 @@ public class PolicyModel {
         this.stockItem = stockItem;
     }
 
-    // Getter and setter for sumInsurd
     public int getSumInsurd() {
         return sumInsurd;
     }
 
     public void setSumInsurd(int sumInsurd) {
         this.sumInsurd = sumInsurd;
-    }
-
-    // Getter and setter for key
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
     }
 }
