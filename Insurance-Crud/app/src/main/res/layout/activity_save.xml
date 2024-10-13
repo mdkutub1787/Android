@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,96 +9,109 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
         app:cardCornerRadius="30dp"
         app:cardElevation="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_gravity="center_horizontal"
-            android:padding="20dp"
-            android:background="@drawable/lavender_border">
+            android:background="@drawable/lavender_border"
+            android:orientation="vertical"
+            android:padding="20dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Save Data"
-                android:textSize="30sp"
+                android:text="Create Fire Ploicy Form "
                 android:textAlignment="center"
-                android:textColor="@color/lavender"/>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:id="@+id/id"
-                android:inputType="number"
-                android:background="@drawable/lavender_border"
-                android:layout_marginTop="20dp"
-                android:padding="16dp"
-                android:hint="Auto-increment ID"
-                android:gravity="start|center_vertical"
                 android:textColor="@color/lavender"
-                android:focusable="false" />
+                android:textSize="30sp" />
 
             <EditText
+                android:id="@+id/id"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/lavender_border"
+                android:focusable="false"
+                android:gravity="start|center_vertical"
+                android:hint="Policy  NO"
+                android:inputType="number"
+                android:padding="16dp"
+                android:textColor="@color/lavender" />
+
+<!--            <EditText-->
+<!--                android:id="@+id/date"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="50dp"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:background="@drawable/lavender_border"-->
+<!--                android:gravity="start|center_vertical"-->
+<!--                android:hint="YYYY-MM-DD"-->
+<!--                android:inputType="date"-->
+<!--                android:padding="16dp"-->
+<!--                android:textColor="@color/lavender" />-->
+
+
+            <EditText
                 android:id="@+id/bankName"
-                android:background="@drawable/lavender_border"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:layout_marginTop="20dp"
-                android:padding="16dp"
+                android:background="@drawable/lavender_border"
+                android:gravity="start|center_vertical"
                 android:hint="Enter Bank Name"
-                android:gravity="start|center_vertical"
-                android:textColor="@color/lavender"/>
+                android:padding="16dp"
+                android:textColor="@color/lavender" />
 
             <EditText
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
                 android:id="@+id/policyHolder"
-                android:background="@drawable/lavender_border"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:layout_marginTop="20dp"
-                android:padding="16dp"
+                android:background="@drawable/lavender_border"
+                android:gravity="start|center_vertical"
                 android:hint="Enter Policy Holder"
-                android:gravity="start|center_vertical"
-                android:textColor="@color/lavender"/>
+                android:padding="16dp"
+                android:textColor="@color/lavender" />
 
             <EditText
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
                 android:id="@+id/address"
-                android:background="@drawable/lavender_border"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:layout_marginTop="20dp"
-                android:padding="16dp"
+                android:background="@drawable/lavender_border"
+                android:gravity="start|center_vertical"
                 android:hint="Enter Address"
-                android:gravity="start|center_vertical"
-                android:textColor="@color/lavender"/>
+                android:padding="16dp"
+                android:textColor="@color/lavender" />
 
             <EditText
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
                 android:id="@+id/stockItem"
-                android:background="@drawable/lavender_border"
-                android:layout_marginTop="20dp"
-                android:padding="16dp"
-                android:hint="Enter Stock Item"
-                android:gravity="start|center_vertical"
-                android:textColor="@color/lavender"/>
-
-            <EditText
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:id="@+id/sumInsurd"
-                android:background="@drawable/lavender_border"
                 android:layout_marginTop="20dp"
+                android:background="@drawable/lavender_border"
+                android:gravity="start|center_vertical"
+                android:hint="Enter Stock Item"
                 android:padding="16dp"
+                android:textColor="@color/lavender" />
+
+            <EditText
+                android:id="@+id/sumInsurd"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/lavender_border"
+                android:gravity="start|center_vertical"
                 android:hint="Enter Sum Insured"
                 android:inputType="number"
-                android:gravity="start|center_vertical"
-                android:textColor="@color/lavender"/>
+                android:padding="16dp"
+                android:textColor="@color/lavender" />
 
             <Button
                 android:id="@+id/saveButton"
@@ -109,7 +121,7 @@
                 android:background="@color/lavender"
                 android:text="Save Policy"
                 android:textColor="@android:color/white"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </ScrollView>
