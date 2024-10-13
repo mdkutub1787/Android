@@ -17,11 +17,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import androidx.annotation.NonNull;
-import com.kutub.insurancecrud.model.InsuranceModel;
+import com.kutub.insurancecrud.model.PolicyModel;
 import java.text.DateFormat;
 import java.util.Calendar;
 
-public class Save extends AppCompatActivity {
+public class PolicySave extends AppCompatActivity {
 
     // Declare UI elements
     Button saveButton;
@@ -36,7 +36,7 @@ public class Save extends AppCompatActivity {
         EdgeToEdge.enable(this);
 
         // Set the layout for this activity
-        setContentView(R.layout.activity_save);
+        setContentView(R.layout.activity_policysave);
 
         // Initialize UI elements
         saveButton = findViewById(R.id.saveButton);
@@ -50,7 +50,7 @@ public class Save extends AppCompatActivity {
         // Fetch the current max ID and set the next one
         fetchNextPolicyId();
 
-        // Save button onClickListener
+        // PolicySave button onClickListener
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,7 +71,7 @@ public class Save extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(Save.this, "Failed to fetch ID", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PolicySave.this, "Failed to fetch ID", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -103,31 +103,31 @@ public class Save extends AppCompatActivity {
         }
 
         // Show progress dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(Save.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(PolicySave.this);
         builder.setCancelable(false);
         builder.setView(R.layout.progress_layout); // Ensure you have a layout for progress
         AlertDialog dialog = builder.create();
         dialog.show();
 
         // Create a PolicyDataClass object with the collected data
-        InsuranceModel policyData = new InsuranceModel(nextPolicyId, bank, holder, addr, stock, insuredSum, "");
+        PolicyModel policyData = new PolicyModel(nextPolicyId, bank, holder, addr, stock, insuredSum, "");
 
         // Generate a unique key based on the current date and time
         String currentDate = DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
 
-        // Save data to Firebase Database under "Policies"
+        // PolicySave data to Firebase Database under "Policies"
         FirebaseDatabase.getInstance().getReference("Policies").child(currentDate)
                 .setValue(policyData).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             // Success message and finish activity
-                            Toast.makeText(Save.this, "Policy Data Saved Successfully", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PolicySave.this, "Policy Data Saved Successfully", Toast.LENGTH_SHORT).show();
                             clearFields();  // Clear input fields after successful save
                             finish();  // Close the activity
                         } else {
                             // Handle any failure in the database update process
-                            Toast.makeText(Save.this, "Data Save Failed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PolicySave.this, "Data PolicySave Failed", Toast.LENGTH_SHORT).show();
                         }
                         dialog.dismiss(); // Dismiss dialog after operation
                     }
@@ -135,7 +135,7 @@ public class Save extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         // Show error message
-                        Toast.makeText(Save.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PolicySave.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                         dialog.dismiss(); // Dismiss dialog on error
                     }
                 });

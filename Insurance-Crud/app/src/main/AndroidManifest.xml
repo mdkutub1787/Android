@@ -13,7 +13,7 @@
         android:theme="@style/Theme.InsuranceCrud"
         tools:targetApi="31">
         <activity
-            android:name=".Save"
+            android:name=".PolicySave"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

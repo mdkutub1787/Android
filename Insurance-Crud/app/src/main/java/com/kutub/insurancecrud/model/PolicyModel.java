@@ -1,6 +1,6 @@
 package com.kutub.insurancecrud.model;
 
-public class InsuranceModel {
+public class PolicyModel {
 
     private int id;
     private String bankName;
@@ -11,11 +11,11 @@ public class InsuranceModel {
     private String key;
 
     // Default constructor
-    public InsuranceModel() {
+    public PolicyModel() {
     }
 
     // Constructor with all fields
-    public InsuranceModel(int id, String bankName, String policyHolder, String address, String stockItem, int sumInsurd, String key) { // Updated type of sumInsurd
+    public PolicyModel(int id, String bankName, String policyHolder, String address, String stockItem, int sumInsurd, String key) { // Updated type of sumInsurd
         this.id = id;
         this.bankName = bankName;
         this.policyHolder = policyHolder;
@@ -26,7 +26,7 @@ public class InsuranceModel {
     }
 
     // Constructor with only id
-    public InsuranceModel(int id) {
+    public PolicyModel(int id) {
         this.id = id;
     }
 
