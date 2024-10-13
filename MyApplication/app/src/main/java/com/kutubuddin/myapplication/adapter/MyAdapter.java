@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-
+import com.bumptech.glide.Glide;
+import com.kutubuddin.myapplication.DetailActivity;
 import com.kutubuddin.myapplication.R;
-
+import com.kutubuddin.myapplication.model.DataClass;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +42,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         DataClass data = dataList.get(position);
 
+        // Load the image using Glide
+        Glide.with(context)
+                .load(data.getDataImage())
+                .placeholder(R.drawable.error_image) // Placeholder image
+                .error(R.drawable.error_image) // Error image
+                .into(holder.recImage);
+
         // Set text fields
         holder.recTitle.setText(data.getDataTitle() != null ? data.getDataTitle() : "");
         holder.recDesc.setText(data.getDataDesc() != null ? data.getDataDesc() : "");
@@ -48,6 +57,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         // Set click listener for the card
         holder.recCard.setOnClickListener(view -> {
             Intent intent = new Intent(context, DetailActivity.class);
+            intent.putExtra("Image", data.getDataImage());
             intent.putExtra("Description", data.getDataDesc());
             intent.putExtra("Title", data.getDataTitle());
             intent.putExtra("Key", data.getKey());
@@ -94,11 +104,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
+        ImageView recImage;
         TextView recTitle, recDesc, recLang;
         CardView recCard;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
+            recImage = itemView.findViewById(R.id.recImage);
             recCard = itemView.findViewById(R.id.recCard);
             recDesc = itemView.findViewById(R.id.recDesc);
             recLang = itemView.findViewById(R.id.recLang);
