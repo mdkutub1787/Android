@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
         btnAdd = findViewById(R.id.btnAdd);
         btnUpdate = findViewById(R.id.btnUpdate);
         btnDelete = findViewById(R.id.btnDelete);
+        textViewResult = findViewById(R.id.textViewResult);
+
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,20 +68,20 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 List<Student> students = db.getAllStudent();
                 if (students.size() == 0) {
-                    textViewResult.setText("Student  Not  Found");
+                    textViewResult.setText("No Students Found");
                     return;
                 }
 
                 StringBuilder builder = new StringBuilder();
                 for (Student student : students) {
                     builder.append("ID : ").append(student.getId()).append("\n");
-                    builder.append("NAME : ").append(student.getId()).append("\n");
-                    builder.append("EMAIL : ").append(student.getId()).append("\n\n");
-
-                    textViewResult.setText(builder.toString());
+                    builder.append("NAME : ").append(student.getName()).append("\n");
+                    builder.append("EMAIL : ").append(student.getEmail()).append("\n\n");
                 }
+                textViewResult.setText(builder.toString());
             }
         });
+
 
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
