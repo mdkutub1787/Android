@@ -8,110 +8,130 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-import com.kutub.sqlitedatabase.databasehelper.DatabaseHelper;
 import com.kutub.sqlitedatabase.model.Student;
+import com.kutub.sqlitedatabase.database.DatabaseHelper; // Assuming you have a DatabaseHelper class for DB operations
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    EditText editTextName, editTextEmail, editTextId;
-    Button btnShow, btnAdd, btnUpdate, btnDelete;
-    TextView textViewResult;
-    DatabaseHelper db;
+
+    private EditText editTextName, editTextEmail, editTextId;
+    private Button btnShow, btnAdd, btnUpdate, btnDelete;
+    private TextView textViewResult;
+    private DatabaseHelper db; // Database helper instance
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
-        db = new DatabaseHelper(this, null, null, 1);
-
-        editTextId = findViewById(R.id.editTextId);
+        // Initialize UI components
         editTextName = findViewById(R.id.editTextName);
         editTextEmail = findViewById(R.id.editTextEmail);
+        editTextId = findViewById(R.id.editTextId);
         btnShow = findViewById(R.id.btnShow);
         btnAdd = findViewById(R.id.btnAdd);
         btnUpdate = findViewById(R.id.btnUpdate);
         btnDelete = findViewById(R.id.btnDelete);
         textViewResult = findViewById(R.id.textViewResult);
 
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String name = editTextName.getText().toString();
-                String email = editTextEmail.getText().toString();
-                Student student = new Student(name, email);
-                boolean inserted = db.createStudent(student);
+        // Initialize the database helper
+        db = new DatabaseHelper(this);
 
-                if (inserted) {
-                    Toast.makeText(MainActivity.this, "Student Added Successfully", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(MainActivity.this, "Student Add Unsuccessfully", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
+        // Set button click listeners
         btnShow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<Student> students = db.getAllStudents();
-                if (students.size() == 0) {
-                    Toast.makeText(MainActivity.this, "No Students Found", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                showStudents();
+            }
+        });
 
-                StringBuilder builder = new StringBuilder();
-                for (Student student : students) {
-                    builder.append("ID: ").append(student.getId()).append("\n");
-                    builder.append("NAME: ").append(student.getName()).append("\n");
-                    builder.append("EMAIL: ").append(student.getEmail()).append("\n\n");
-                }
-
-                Intent intent = new Intent(MainActivity.this, ShowStudentsActivity.class);
-                intent.putExtra("students_data", builder.toString());
-                startActivity(intent);
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addStudent();
             }
         });
 
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String id = editTextId.getText().toString();
-                String name = editTextName.getText().toString();
-                String email = editTextEmail.getText().toString();
-                Student student = new Student(Integer.parseInt(id), name, email);
-                boolean isUpdate = db.updateStudent(student);
-                if (isUpdate) {
-                    Toast.makeText(MainActivity.this, "Student Updated Successfully", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(MainActivity.this, "Student Update Unsuccessfully", Toast.LENGTH_SHORT).show();
-                }
+                updateStudent();
             }
         });
 
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String id = editTextId.getText().toString();
-                boolean isDelete = db.deleteStudent(Integer.parseInt(id));
-                if (isDelete) {
-                    Toast.makeText(MainActivity.this, "Student Deleted Successfully", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(MainActivity.this, "Student Delete Unsuccessfully", Toast.LENGTH_SHORT).show();
-                }
+                deleteStudent();
             }
         });
+    }
+
+    private void showStudents() {
+        List<Student> students = db.getAllStudents();
+        if (students.size() == 0) {
+            Toast.makeText(MainActivity.this, "No Students Found", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        StringBuilder builder = new StringBuilder();
+        for (Student student : students) {
+            builder.append("ID: ").append(student.getId()).append("\n");
+            builder.append("NAME: ").append(student.getName()).append("\n");
+            builder.append("EMAIL: ").append(student.getEmail()).append("\n\n");
+        }
+
+        Intent intent = new Intent(MainActivity.this, ShowStudentsActivity.class);
+        intent.putExtra("students_data", builder.toString());
+        startActivity(intent);
+    }
+
+    private void addStudent() {
+        String name = editTextName.getText().toString();
+        String email = editTextEmail.getText().toString();
+        if (name.isEmpty() || email.isEmpty()) {
+            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Student student = new Student(name, email);
+        db.addStudent(student);
+        Toast.makeText(this, "Student Added", Toast.LENGTH_SHORT).show();
+        clearFields();
+    }
+
+    private void updateStudent() {
+        String idStr = editTextId.getText().toString();
+        String name = editTextName.getText().toString();
+        String email = editTextEmail.getText().toString();
+        if (idStr.isEmpty() || name.isEmpty() || email.isEmpty()) {
+            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        int id = Integer.parseInt(idStr);
+        Student student = new Student(id, name, email);
+        db.updateStudent(student);
+        Toast.makeText(this, "Student Updated", Toast.LENGTH_SHORT).show();
+        clearFields();
+    }
+
+    private void deleteStudent() {
+        String idStr = editTextId.getText().toString();
+        if (idStr.isEmpty()) {
+            Toast.makeText(this, "Please enter ID to delete", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        int id = Integer.parseInt(idStr);
+        db.deleteStudent(id);
+        Toast.makeText(this, "Student Deleted", Toast.LENGTH_SHORT).show();
+        clearFields();
+    }
+
+    private void clearFields() {
+        editTextName.setText("");
+        editTextEmail.setText("");
+        editTextId.setText("");
     }
 }

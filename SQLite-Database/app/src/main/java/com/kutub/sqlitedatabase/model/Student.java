@@ -1,7 +1,6 @@
 package com.kutub.sqlitedatabase.model;
 
 public class Student {
-
     private int id;
     private String name;
     private String email;
@@ -9,15 +8,15 @@ public class Student {
     public Student() {
     }
 
-    public Student(int id, String name, String gmail) {
-        this.id = id;
+    public Student(String name, String email) {
         this.name = name;
-        this.email = gmail;
+        this.email = email;
     }
 
-    public Student(String gmail, String name) {
-        this.email = gmail;
+    public Student(int id, String name, String email) {
+        this.id = id;
         this.name = name;
+        this.email = email;
     }
 
     public int getId() {
