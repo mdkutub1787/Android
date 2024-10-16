@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import androidx.annotation.Nullable;
-
 import com.kutub.sqlitedatabase.model.Student;
 
 import java.util.ArrayList;
@@ -15,83 +13,76 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-
-    public static final String DB_NAME = "sqlite59";
+    private static final String DATABASE_NAME = "studentDB";
+    private static final String TABLE_NAME = "students";
     public static final int VERSION = 1;
-    public static final String TABLE_STUDENT = "students";
-    public static final String COLUMN_ID = "id";
-    public static final String COLUMN_NAME = "name";
-    public static final String COLUMN_EMAIL = "email";
+    private static final String COLUMN_ID = "id";
+    private static final String COLUMN_NAME = "name";
+    private static final String COLUMN_EMAIL = "email";
 
-
-    public DatabaseHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
+    public DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+        super(context, DATABASE_NAME, factory, 1);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // Create student table
-        String createTable = "CREATE TABLE " + TABLE_STUDENT + " ("
-                + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + COLUMN_NAME + " TEXT, "
+        String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + "("
+                + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + COLUMN_NAME + " TEXT,"
                 + COLUMN_EMAIL + " TEXT)";
-        db.execSQL(createTable);
+        db.execSQL(CREATE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_STUDENT);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
     }
 
-
     public boolean createStudent(Student student) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_NAME, student.getName());
-        contentValues.put(COLUMN_EMAIL, student.getEmail());
-        long status = db.insert(TABLE_STUDENT, null, contentValues);
-        return status != -1;
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME, student.getName());
+        values.put(COLUMN_EMAIL, student.getEmail());
+        long result = db.insert(TABLE_NAME, null, values);
+        db.close();
+        return result != -1;
     }
 
-    // Get all students
     public List<Student> getAllStudents() {
-        List<Student> studentList = new ArrayList<>();
+        List<Student> students = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_STUDENT, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
 
         if (cursor.moveToFirst()) {
             do {
-                int id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID));
-                String name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME));
-                String email = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EMAIL));
-
-                Student student = new Student(id, name, email);
-                studentList.add(student);
+                Student student = new Student();
+                student.setId(cursor.getInt(0));
+                student.setName(cursor.getString(1));
+                student.setEmail(cursor.getString(2));
+                students.add(student);
             } while (cursor.moveToNext());
         }
-
         cursor.close();
-        return studentList;
+        db.close();
+        return students;
     }
 
-    // Update student record
     public boolean updateStudent(Student student) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_NAME, student.getName());
-        contentValues.put(COLUMN_EMAIL, student.getEmail());
-        int result = db.update(TABLE_STUDENT, contentValues, COLUMN_ID + "=?", new String[]{String.valueOf(student.getId())});
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME, student.getName());
+        values.put(COLUMN_EMAIL, student.getEmail());
+
+        int result = db.update(TABLE_NAME, values, COLUMN_ID + " = ?", new String[]{String.valueOf(student.getId())});
+        db.close();
         return result > 0;
     }
 
-    // Delete student record
     public boolean deleteStudent(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        int result = db.delete(TABLE_STUDENT, COLUMN_ID + "=?", new String[]{String.valueOf(id)});
+        int result = db.delete(TABLE_NAME, COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
+        db.close();
         return result > 0;
     }
-
-
 }

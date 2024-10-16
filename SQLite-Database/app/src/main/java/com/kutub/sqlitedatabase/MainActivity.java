@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
         btnDelete = findViewById(R.id.btnDelete);
         textViewResult = findViewById(R.id.textViewResult);
 
-
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 boolean inserted = db.createStudent(student);
 
                 if (inserted) {
-                    Toast.makeText(MainActivity.this, "Student Add Successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Student Added Successfully", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(MainActivity.this, "Student Add Unsuccessfully", Toast.LENGTH_SHORT).show();
                 }
@@ -68,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 List<Student> students = db.getAllStudents();
-                  if (students.size() == 0) {
+                if (students.size() == 0) {
                     Toast.makeText(MainActivity.this, "No Students Found", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -80,14 +79,11 @@ public class MainActivity extends AppCompatActivity {
                     builder.append("EMAIL: ").append(student.getEmail()).append("\n\n");
                 }
 
-
                 Intent intent = new Intent(MainActivity.this, ShowStudentsActivity.class);
                 intent.putExtra("students_data", builder.toString());
                 startActivity(intent);
             }
         });
-
-
 
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                 Student student = new Student(Integer.parseInt(id), name, email);
                 boolean isUpdate = db.updateStudent(student);
                 if (isUpdate) {
-                    Toast.makeText(MainActivity.this, "Student Update Successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Student Updated Successfully", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(MainActivity.this, "Student Update Unsuccessfully", Toast.LENGTH_SHORT).show();
                 }
@@ -109,18 +105,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String id = editTextId.getText().toString();
-
                 boolean isDelete = db.deleteStudent(Integer.parseInt(id));
                 if (isDelete) {
-                    Toast.makeText(MainActivity.this, "Student Delete Successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Student Deleted Successfully", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(MainActivity.this, "Student Delete Unsuccessfully", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
-
     }
-
-
 }
