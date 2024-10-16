@@ -15,7 +15,7 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    // Database constants
+
     public static final String DB_NAME = "sqlite59";
     public static final int VERSION = 1;
     public static final String TABLE_STUDENT = "students";
@@ -23,9 +23,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_EMAIL = "email";
 
-    // Constructor
-    public DatabaseHelper(@Nullable Context context) {
-        super(context, DB_NAME, null, VERSION);
+
+    public DatabaseHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
+        super(context, name, factory, version);
     }
 
     @Override
@@ -40,12 +40,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Drop older table if exists and recreate
+
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_STUDENT);
         onCreate(db);
     }
 
-    // Create student record
+
     public boolean createStudent(Student student) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -93,7 +93,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result > 0;
     }
 
-    public DatabaseHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
-    }
+
 }
