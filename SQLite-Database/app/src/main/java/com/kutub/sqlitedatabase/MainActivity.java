@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 List<Student> students = db.getAllStudent();
-                if (students.size() == 0) {
+                  if (students.size() == 0) {
                     Toast.makeText(MainActivity.this, "No Students Found", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                     builder.append("EMAIL: ").append(student.getEmail()).append("\n\n");
                 }
 
-                
+
                 Intent intent = new Intent(MainActivity.this, ShowStudentsActivity.class);
                 intent.putExtra("students_data", builder.toString());
                 startActivity(intent);

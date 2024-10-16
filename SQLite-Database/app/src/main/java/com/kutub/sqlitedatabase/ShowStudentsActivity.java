@@ -15,7 +15,7 @@ public class ShowStudentsActivity extends AppCompatActivity {
 
         textViewStudents = findViewById(R.id.textViewStudents);
 
-        // Get the student data passed from MainActivity
+
         String studentsData = getIntent().getStringExtra("students_data");
 
 
