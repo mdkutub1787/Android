@@ -1,5 +1,6 @@
 package com.kutub.sqlitedatabase;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -68,19 +69,24 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 List<Student> students = db.getAllStudent();
                 if (students.size() == 0) {
-                    textViewResult.setText("No Students Found");
+                    Toast.makeText(MainActivity.this, "No Students Found", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 StringBuilder builder = new StringBuilder();
                 for (Student student : students) {
-                    builder.append("ID : ").append(student.getId()).append("\n");
-                    builder.append("NAME : ").append(student.getName()).append("\n");
-                    builder.append("EMAIL : ").append(student.getEmail()).append("\n\n");
+                    builder.append("ID: ").append(student.getId()).append("\n");
+                    builder.append("NAME: ").append(student.getName()).append("\n");
+                    builder.append("EMAIL: ").append(student.getEmail()).append("\n\n");
                 }
-                textViewResult.setText(builder.toString());
+
+                
+                Intent intent = new Intent(MainActivity.this, ShowStudentsActivity.class);
+                intent.putExtra("students_data", builder.toString());
+                startActivity(intent);
             }
         });
+
 
 
         btnUpdate.setOnClickListener(new View.OnClickListener() {
