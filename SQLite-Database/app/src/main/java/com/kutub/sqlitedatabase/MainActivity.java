@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         btnShow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<Student> students = db.getAllStudent();
+                List<Student> students = db.getAllStudents();
                   if (students.size() == 0) {
                     Toast.makeText(MainActivity.this, "No Students Found", Toast.LENGTH_SHORT).show();
                     return;
