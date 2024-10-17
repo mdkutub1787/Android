@@ -1,0 +1,23 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme -->
+    <style name="Base.Theme.StudentApp" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+        <!-- Primary variant color -->
+        <item name="colorPrimaryVariant">@color/nibm_blue</item>
+    </style>
+
+    <!-- Main application theme -->
+    <style name="Theme.StudentApp" parent="Base.Theme.StudentApp" />
+
+
+
+    <!-- Rounded ImageView style -->
+    <style name="roundedImageViewRounded">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+</resources>

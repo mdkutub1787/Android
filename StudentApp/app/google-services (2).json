@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "372912734883",
+    "firebase_url": "https://student-app-b753e-default-rtdb.firebaseio.com",
+    "project_id": "student-app-b753e",
+    "storage_bucket": "student-app-b753e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:372912734883:android:e9971611e4700a01203516",
+        "android_client_info": {
+          "package_name": "com.kutub.studentapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlzrpAbx4OO1gU5nyUulMHr4fbWW-Dsjc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
