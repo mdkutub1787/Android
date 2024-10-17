@@ -118,7 +118,7 @@
                 />
 
             <Button
-                android:layout_width="100dp"
+                android:layout_width="110dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:text="Update"

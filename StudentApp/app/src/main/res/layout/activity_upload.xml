@@ -50,6 +50,7 @@
                 android:background="@drawable/custom_edittext"
                 android:layout_marginTop="20dp"
                 android:padding="10dp"
+                android:inputType="numberDecimal"
                 android:hint="Enter Register Number"
                 android:gravity="start|center_vertical"
                 android:textColor="@color/nibm_blue"
@@ -74,6 +75,7 @@
                 android:background="@drawable/custom_edittext"
                 android:layout_marginTop="20dp"
                 android:padding="10dp"
+                android:inputType="number"
                 android:hint="Enter Student Age"
                 android:gravity="start|center_vertical"
                 android:textColor="@color/nibm_blue"
@@ -99,6 +101,7 @@
                 android:layout_marginTop="20dp"
                 android:padding="10dp"
                 android:hint="Contact Number"
+                android:inputType="number"
                 android:gravity="start|center_vertical"
                 android:textColor="@color/nibm_blue"
                 />
@@ -110,11 +113,12 @@
                 android:background="@drawable/custom_edittext"
                 android:layout_marginTop="20dp"
                 android:padding="10dp"
+                android:inputType="number"
                 android:hint="Parent Contact Number"
                 android:gravity="start|center_vertical"
                 android:textColor="@color/nibm_blue"
                 />
-            
+
             <Button
                 android:layout_width="100dp"
                 android:layout_height="50dp"
