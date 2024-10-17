@@ -113,22 +113,6 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
-        // Click listeners for detailContact and detailParent TextViews to open dial pad
-        detailContact.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String contactNumber = detailContact.getText().toString().trim();
-                openDialPad(contactNumber);
-            }
-        });
-
-        detailParent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String parentNumber = detailParent.getText().toString().trim();
-                openDialPad(parentNumber);
-            }
-        });
     }
 
     // Method to open the dialer with a given phone number
