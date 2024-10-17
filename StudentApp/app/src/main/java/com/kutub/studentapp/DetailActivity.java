@@ -1,7 +1,7 @@
 package com.kutub.studentapp;
 
 import android.content.Intent;
-import android.net.Uri; // Add this import for opening the dial pad
+import android.net.Uri; // Import to open the dial pad
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,8 +21,7 @@ import com.google.firebase.storage.StorageReference;
 public class DetailActivity extends AppCompatActivity {
 
     TextView detailName, detailRegNo, detailAge, detailGender, detailContact, detailParent;
-    ImageView detailImage;
-
+    ImageView detailImage, callContact;  // Add callContact reference
     Button deleteBtn, editBtn;
     String key = "";
     String imageUrl = "";
@@ -39,6 +38,7 @@ public class DetailActivity extends AppCompatActivity {
         detailContact = findViewById(R.id.detialContact);
         detailParent = findViewById(R.id.detialParentNo);
         detailImage = findViewById(R.id.detailImage);
+        callContact = findViewById(R.id.callContact);  // Find callContact view
         deleteBtn = findViewById(R.id.deleteBtn);
         editBtn = findViewById(R.id.editBtn);
 
@@ -91,6 +91,15 @@ public class DetailActivity extends AppCompatActivity {
                         .putExtra("Key", key);
 
                 startActivity(intent);
+            }
+        });
+
+        // Add click listener for callContact ImageView to open dial pad
+        callContact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String contactNumber = detailContact.getText().toString().trim();
+                openDialPad(contactNumber);
             }
         });
 

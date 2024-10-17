@@ -79,25 +79,63 @@
                 android:textSize="15sp"
                 />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="15dp"
-                android:text="Contact Number"
-                android:layout_gravity="center"
-                android:id="@+id/detialContact"
-                android:textSize="15sp"
-                />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="15dp"
+        android:gravity="center_vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="15dp"
-                android:text="Parent Number"
-                android:layout_gravity="center"
-                android:id="@+id/detialParentNo"
-                android:textSize="15sp"
-                />
+        <!-- Call icon on the left -->
+        <ImageView
+            android:id="@+id/callContact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_add_call_24"
+            android:contentDescription="Call Contact"
+            android:padding="10dp"
+            android:layout_gravity="center" />
+
+        <!-- Contact Number text -->
+        <TextView
+            android:id="@+id/detialContact"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Contact Number"
+            android:textSize="15sp"
+            android:padding="10dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="15dp"
+        android:gravity="center_vertical">
+
+        <!-- Call icon on the left -->
+        <ImageView
+            android:id="@+id/callParent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_add_call_24"
+            android:contentDescription="Call Parent"
+            android:padding="10dp"
+            android:layout_gravity="center" />
+
+        <!-- Parent Number text -->
+        <TextView
+            android:id="@+id/detialParentNo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Parent Number"
+            android:textSize="15sp"
+            android:padding="10dp" />
+    </LinearLayout>
+
+
 
     <RelativeLayout
         android:layout_width="match_parent"
