@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -33,9 +35,11 @@ public class UpdateActivity extends AppCompatActivity {
 
     ImageView updateImage;
     Button updateButton;
-    EditText updateRegNo, updateName, updateAge, updateGender, updateContact, updateParent;
-    String imageUrl, regNo, name,  gender,  key, oldImageUrl;
-    Integer age,contactNumber, parentNumber;
+    EditText updateRegNo, updateName, updateAge, updateContact, updateParent;
+    RadioGroup genderGroup;
+    RadioButton radioMale, radioFemale;
+    String imageUrl, regNo, name, gender, key, oldImageUrl;
+    Integer age, contactNumber, parentNumber;
     Uri uri;
     DatabaseReference databaseReference;
     StorageReference storageReference;
@@ -46,27 +50,29 @@ public class UpdateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
 
+        // Initialize UI components
         updateImage = findViewById(R.id.updateImage);
         updateButton = findViewById(R.id.updateButton);
         updateRegNo = findViewById(R.id.updateStdRegNo);
         updateName = findViewById(R.id.updateStdName);
         updateAge = findViewById(R.id.updateStdAge);
-        updateGender = findViewById(R.id.updateStdGender);
         updateContact = findViewById(R.id.updateStdMobNo);
         updateParent = findViewById(R.id.updateStdParentNo);
 
-        // Move this part to before using activityResultLauncher
+        genderGroup = findViewById(R.id.genderGroup);
+        radioMale = findViewById(R.id.radioMale);
+        radioFemale = findViewById(R.id.radioFemale);
+
+        // Set up Activity Result Launcher
         activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
-                    public void onActivityResult(ActivityResult o) {
-                        if (o.getResultCode() == Activity.RESULT_OK) {
-                            Intent data = o.getData();
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Intent data = result.getData();
                             uri = data.getData();
                             updateImage.setImageURI(uri);
-
-                            // Use the updated method to get StorageReference
                             storageReference = FirebaseStorage.getInstance().getReference().child("Images").child(uri.getLastPathSegment());
                         } else {
                             Toast.makeText(UpdateActivity.this, "No Image Selected!", Toast.LENGTH_SHORT).show();
@@ -75,26 +81,34 @@ public class UpdateActivity extends AppCompatActivity {
                 }
         );
 
+        // Populate the form with data from the intent
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            // Other assignments remain the same
             updateName.setText(bundle.getString("Name"));
             updateRegNo.setText(bundle.getString("RegNo"));
-            updateAge.setText(String.valueOf(bundle.getInt("Age"))); // Correct method for getting int
-            updateGender.setText(bundle.getString("Gender"));
-            updateContact.setText(String.valueOf(bundle.getInt("ContactNo"))); // Correct method for getting int
-            updateParent.setText(String.valueOf(bundle.getInt("ParentNo"))); // Correct method for getting int
+            updateAge.setText(String.valueOf(bundle.getInt("Age")));
+            updateContact.setText(String.valueOf(bundle.getInt("ContactNo")));
+            updateParent.setText(String.valueOf(bundle.getInt("ParentNo")));
             key = bundle.getString("Key");
             oldImageUrl = bundle.getString("Image");
 
-            // Load the image using Glide
+            // Set the gender RadioButton based on passed data
+            String genderValue = bundle.getString("Gender");
+            if (genderValue.equals("Male")) {
+                radioMale.setChecked(true);
+            } else if (genderValue.equals("Female")) {
+                radioFemale.setChecked(true);
+            }
+
             Glide.with(UpdateActivity.this)
                     .load(oldImageUrl)
                     .into(updateImage);
         }
 
+        // Reference to the student in Firebase Database
         databaseReference = FirebaseDatabase.getInstance().getReference("Students").child(key);
 
+        // Image Click Listener
         updateImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,6 +118,7 @@ public class UpdateActivity extends AppCompatActivity {
             }
         });
 
+        // Update Button Click Listener
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,9 +129,9 @@ public class UpdateActivity extends AppCompatActivity {
         });
     }
 
+    // Save Data to Firebase
     public void saveData() {
         if (uri != null) {
-            // If URI is not null, upload the new image
             storageReference = FirebaseStorage.getInstance().getReference().child("Images").child(uri.getLastPathSegment());
 
             AlertDialog.Builder builder = new AlertDialog.Builder(UpdateActivity.this);
@@ -142,19 +157,25 @@ public class UpdateActivity extends AppCompatActivity {
                 }
             });
         } else {
-            // If URI is null, proceed with the existing image
             imageUrl = oldImageUrl;
             updateData();
         }
     }
 
-
-
+    // Update Data in Firebase
     public void updateData() {
         name = updateName.getText().toString().trim();
         regNo = updateRegNo.getText().toString().trim();
         age = Integer.valueOf(updateAge.getText().toString());
-        gender = updateGender.getText().toString();
+
+        // Get selected gender from RadioGroup
+        int selectedGenderId = genderGroup.getCheckedRadioButtonId();
+        if (selectedGenderId == R.id.radioMale) {
+            gender = "Male";
+        } else if (selectedGenderId == R.id.radioFemale) {
+            gender = "Female";
+        }
+
         contactNumber = Integer.valueOf(updateContact.getText().toString());
         parentNumber = Integer.valueOf(updateParent.getText().toString());
 
@@ -164,23 +185,19 @@ public class UpdateActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    // Update successful, now delete the old image
+                    // Delete the old image after updating
                     int lastSlashIndex = oldImageUrl.lastIndexOf('/');
                     String path = oldImageUrl.substring(lastSlashIndex + 1);
-
-                    // Get the reference using the path
                     StorageReference reference = FirebaseStorage.getInstance().getReference().child(path);
                     reference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            // Image deleted successfully
                             Toast.makeText(UpdateActivity.this, "Student Update Successfully !!", Toast.LENGTH_SHORT).show();
                             finish();
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            // Handle the failure to delete image, if necessary
                             Toast.makeText(UpdateActivity.this, "Updated! (Image deletion failed)", Toast.LENGTH_SHORT).show();
                             finish();
                         }
@@ -194,19 +211,4 @@ public class UpdateActivity extends AppCompatActivity {
             }
         });
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
