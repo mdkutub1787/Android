@@ -66,7 +66,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="By Limon Islam Borno"
+                android:text="Md Kutub Uddin"
                 android:textSize="18sp"
                 android:textStyle="bold" />
         </LinearLayout>
