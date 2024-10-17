@@ -1,6 +1,7 @@
 package com.kutub.studentapp;
 
 import android.content.Intent;
+import android.net.Uri; // Add this import for opening the dial pad
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,9 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-
 import com.bumptech.glide.Glide;
-
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -43,6 +42,7 @@ public class DetailActivity extends AppCompatActivity {
         deleteBtn = findViewById(R.id.deleteBtn);
         editBtn = findViewById(R.id.editBtn);
 
+        // Extracting data from bundle
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             detailName.setText(bundle.getString("Name"));
@@ -56,6 +56,7 @@ public class DetailActivity extends AppCompatActivity {
             Glide.with(this).load(bundle.getString("Image")).into(detailImage);
         }
 
+        // Delete button functionality
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,6 +76,7 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
+        // Edit button functionality
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,5 +93,29 @@ public class DetailActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // Add click listeners to open dialer on contact number and parent number click
+        detailContact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String contactNumber = detailContact.getText().toString().trim();
+                openDialPad(contactNumber);
+            }
+        });
+
+        detailParent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String parentNumber = detailParent.getText().toString().trim();
+                openDialPad(parentNumber);
+            }
+        });
+    }
+
+    // Method to open dialer with a phone number
+    private void openDialPad(String phoneNumber) {
+        Intent dialIntent = new Intent(Intent.ACTION_DIAL);
+        dialIntent.setData(Uri.parse("tel:" + phoneNumber));
+        startActivity(dialIntent);
     }
 }
