@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class LogIn extends AppCompatActivity {
 
     private FirebaseAuth auth;
-    public EditText loginEmail, loginPassword;
+    public EditText loginName, loginEmail, loginPassword;
     private TextView signupRedirectText;
     private Button loginButton;
 
@@ -30,6 +30,7 @@ public class LogIn extends AppCompatActivity {
         setContentView(R.layout.activity_log_in);
 
         auth = FirebaseAuth.getInstance();
+        loginName = findViewById(R.id.login_name);
         loginEmail = findViewById(R.id.login_email);
         loginPassword = findViewById(R.id.login_password);
         loginButton = findViewById(R.id.login_btn);
@@ -38,6 +39,7 @@ public class LogIn extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String name = loginName.getText().toString().trim();
                 String email = loginEmail.getText().toString().trim();
                 String pass = loginPassword.getText().toString().trim();
 
@@ -47,11 +49,13 @@ public class LogIn extends AppCompatActivity {
                                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                                     @Override
                                     public void onSuccess(AuthResult authResult) {
-                                        Toast.makeText(LogIn.this, "Logged in successfully!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(LogIn.this, "Logged in as "+loginName.getText().toString(), Toast.LENGTH_SHORT).show();
                                         finish();
                                         Intent intent = new Intent(LogIn.this, MainMenu.class);
-                                        intent.putExtra("USER_EMAIL", email); // Sending only email
+                                        intent.putExtra("USER_NAME", name);
+                                        intent.putExtra("USER_EMAIL", email);
                                         startActivity(intent);
+
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                                     @Override
@@ -59,12 +63,12 @@ public class LogIn extends AppCompatActivity {
                                         Toast.makeText(LogIn.this, "Login Failed!", Toast.LENGTH_SHORT).show();
                                     }
                                 });
-                    } else {
+                    }else {
                         loginPassword.setError("Password cannot be empty!");
                     }
                 } else if (email.isEmpty()) {
                     loginEmail.setError("Email cannot be empty!");
-                } else {
+                }else {
                     loginEmail.setError("Please enter a valid address!");
                 }
             }
@@ -76,5 +80,6 @@ public class LogIn extends AppCompatActivity {
                 startActivity(new Intent(LogIn.this, SignUp.class));
             }
         });
+
     }
 }
