@@ -174,7 +174,7 @@ public class UpdateActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Void aVoid) {
                             // Image deleted successfully
-                            Toast.makeText(UpdateActivity.this, "Updated!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(UpdateActivity.this, "Student Update Successfully !!", Toast.LENGTH_SHORT).show();
                             finish();
                         }
                     }).addOnFailureListener(new OnFailureListener() {

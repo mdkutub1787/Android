@@ -137,7 +137,7 @@ public class UploadActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(UploadActivity.this, "Saved!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(UploadActivity.this, "Student Saved Successfully !", Toast.LENGTH_SHORT).show();
                             finish();
                         }
                     }
