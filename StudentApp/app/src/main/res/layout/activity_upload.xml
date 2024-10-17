@@ -81,17 +81,32 @@
                 android:textColor="@color/nibm_blue"
                 />
 
-            <EditText
+            <RadioGroup
+                android:id="@+id/genderGroup"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:id="@+id/stdGender"
-                android:background="@drawable/custom_edittext"
-                android:layout_marginTop="20dp"
-                android:padding="10dp"
-                android:hint="Gender"
-                android:gravity="start|center_vertical"
-                android:textColor="@color/nibm_blue"
-                />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp">
+
+                <RadioButton
+                    android:id="@+id/radioMale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:text="Male"
+                    android:textColor="@color/nibm_blue"
+                    android:padding="10dp"
+                    android:gravity="center_vertical" />
+
+                <RadioButton
+                    android:id="@+id/radioFemale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:text="Female"
+                    android:textColor="@color/nibm_blue"
+                    android:padding="10dp"
+                    android:gravity="center_vertical" />
+            </RadioGroup>
+
 
             <EditText
                 android:layout_width="match_parent"

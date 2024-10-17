@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -34,10 +36,10 @@ public class UploadActivity extends AppCompatActivity {
 
     ImageView uploadImage;
     Button saveButton;
-    EditText regNo, stdName, stdAge, stdGender, contactNo, parentTeleNo;
+    EditText regNo, stdName, stdAge, contactNo, parentTeleNo;
     String imageURL;
     Uri uri;
-
+    RadioGroup genderGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +51,9 @@ public class UploadActivity extends AppCompatActivity {
         regNo = findViewById(R.id.stdRegNo);
         stdName = findViewById(R.id.stdName);
         stdAge = findViewById(R.id.stdAge);
-        stdGender = findViewById(R.id.stdGender);
         contactNo = findViewById(R.id.stdMobNo);
         parentTeleNo = findViewById(R.id.stdParentNo);
+        genderGroup = findViewById(R.id.genderGroup); // Initialize gender group
 
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -65,7 +67,6 @@ public class UploadActivity extends AppCompatActivity {
                         } else {
                             Toast.makeText(UploadActivity.this, "No Image Selected!", Toast.LENGTH_SHORT).show();
                         }
-
                     }
                 });
 
@@ -84,11 +85,14 @@ public class UploadActivity extends AppCompatActivity {
                 saveData();
             }
         });
-
-
     }
 
     public void saveData() {
+        if (uri == null) {
+            Toast.makeText(this, "Please select an image", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Student Images")
                 .child(uri.getLastPathSegment());
 
@@ -102,28 +106,31 @@ public class UploadActivity extends AppCompatActivity {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                while (!uriTask.isComplete());
+                while (!uriTask.isComplete()) ;
                 Uri urlImage = uriTask.getResult();
                 imageURL = urlImage.toString();
                 uploadData();
                 dialog.dismiss();
-
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 dialog.dismiss();
+                Toast.makeText(UploadActivity.this, "Image Upload Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     public void uploadData() {
-
-
         String registerNumber = regNo.getText().toString();
         String studentName = stdName.getText().toString();
         Integer studentAge = Integer.valueOf(stdAge.getText().toString());
-        String studentGender = stdGender.getText().toString();
+
+        // Get selected gender
+        int selectedId = genderGroup.getCheckedRadioButtonId();
+        RadioButton selectedGender = findViewById(selectedId);
+        String studentGender = selectedGender != null ? selectedGender.getText().toString() : "Not Specified";
+
         Integer studentContactNumber = Integer.valueOf(contactNo.getText().toString());
         Integer studentParentNumber = Integer.valueOf(parentTeleNo.getText().toString());
 
@@ -137,17 +144,15 @@ public class UploadActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(UploadActivity.this, "Student Saved Successfully !", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(UploadActivity.this, "Student Saved Successfully!", Toast.LENGTH_SHORT).show();
                             finish();
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(UploadActivity.this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UploadActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
-
     }
-
 }
