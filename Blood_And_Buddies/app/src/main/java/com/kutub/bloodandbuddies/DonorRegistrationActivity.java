@@ -108,7 +108,7 @@ public class DonorRegistrationActivity extends AppCompatActivity {
                     donorPassword.setError("Password is Required");
                     return;
                 }else {
-                    loader.setMessage("Just a minute...");
+                    loader.setMessage("Just a moment...");
                     loader.setCanceledOnTouchOutside(false);
                     loader.show();
 
