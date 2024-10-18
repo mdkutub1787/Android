@@ -138,8 +138,8 @@ public class DonorRegistrationActivity extends AppCompatActivity {
                             userInfo.put("email", email);
                             userInfo.put("phonenumber", number);
                             userInfo.put("bloodgroup", bloodGroup);
-                            userInfo.put("type", "recipient");
-                            userInfo.put("search", "recipient" + bloodGroup);
+                            userInfo.put("type", "donor");
+                            userInfo.put("search", "donor" + bloodGroup);
 
                             userDatabaseRef.updateChildren(userInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
