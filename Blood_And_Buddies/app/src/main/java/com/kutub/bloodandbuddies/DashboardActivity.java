@@ -208,12 +208,16 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        // Get the selected item's ID
         int id = item.getItemId();
 
+        // Using if-else instead of switch-case for navigation
         if (id == R.id.sent_mail) {
+            // Navigate to SentEmailActivity
             Intent intent2 = new Intent(DashboardActivity.this, SentEmailActivity.class);
             startActivity(intent2);
         } else if (id == R.id.compatible) {
+            // Navigate to CatogarySelectedActivity with extra data
             Intent intent3 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
             intent3.putExtra("group", "Compatible with me");
             startActivity(intent3);
@@ -249,13 +253,27 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             Intent intent11 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
             intent11.putExtra("group", "O-");
             startActivity(intent11);
+        } else if (id == R.id.profile) {
+            // Navigate to ProfileActivity
+            Intent intent12 = new Intent(DashboardActivity.this, ProfileActivity.class);
+            startActivity(intent12);
+        } else if (id == R.id.notifications) {
+            // Navigate to NotificationActivity
+            Intent intent13 = new Intent(DashboardActivity.this, NotificationActivity.class);
+            startActivity(intent13);
         } else if (id == R.id.logout) {
+            // Sign out and navigate to LoginActivity
             FirebaseAuth.getInstance().signOut();
-            Intent intent = new Intent(DashboardActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
+            Intent intent14 = new Intent(DashboardActivity.this, LoginActivity.class);
+            startActivity(intent14);
+            finish(); // End the current activity
+        } else if (id == R.id.about) {
+            // Navigate to AboutActivity
+            Intent intent15 = new Intent(DashboardActivity.this, AboutActivity.class);
+            startActivity(intent15);
         }
 
+        // Close the navigation drawer
         appDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
