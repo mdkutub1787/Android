@@ -99,7 +99,7 @@ public class RecipientRegistrationActivity extends AppCompatActivity {
                     donorPhnNum.setError("Phone Number is Required");
                     return;
                 }
-                if (bloodGroup.equals("Select Your Blood Group")){
+                if (bloodGroup.equals("Select Your Blood Group>")){
                     Toast.makeText(RecipientRegistrationActivity.this, "Select Blood Group", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -110,7 +110,7 @@ public class RecipientRegistrationActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(password)){
                     donorPassword.setError("Password is Required");
                     return;
-                }else{
+                }else {
                     loader.setMessage("Just a minute...");
                     loader.setCanceledOnTouchOutside(false);
                     loader.show();
@@ -118,14 +118,13 @@ public class RecipientRegistrationActivity extends AppCompatActivity {
                     userAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-
                             if(!task.isSuccessful()) {
                                 String error = task.getException().toString();
-                                Toast.makeText(RecipientRegistrationActivity.this, "Error " + error, Toast.LENGTH_SHORT).show();
-                            }else{
-
+                                Toast.makeText(RecipientRegistrationActivity.this, "Error" + error, Toast.LENGTH_SHORT).show();
+                            }else {
                                 String currentUserId = userAuth.getCurrentUser().getUid();
                                 userDatabaseRef = FirebaseDatabase.getInstance().getReference().child("users").child(currentUserId);
+
                                 HashMap userInfo = new HashMap();
                                 userInfo.put("id", currentUserId);
                                 userInfo.put("name", fullName);
@@ -147,6 +146,7 @@ public class RecipientRegistrationActivity extends AppCompatActivity {
                                         }else{
                                             Toast.makeText(RecipientRegistrationActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
                                         }
+
                                         finish();
                                     }
                                 });
