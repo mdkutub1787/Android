@@ -30,6 +30,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.kutub.bloodandbuddies.Adapter.UserAdapter;
 import com.kutub.bloodandbuddies.Model.User;
+import com.kutub.bloodandbuddies.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -211,81 +212,74 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        // Get the selected item's ID
+        int id = item.getItemId();
 
-            case R.id.sent_mail:
-                Intent intent2 = new Intent(DashboardActivity.this, SentEmailActivity.class);
-                startActivity(intent2);
-                break;
-            case R.id.compatible:
-                Intent intent3 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
-                intent3.putExtra("group","Compatible with me");
-                startActivity(intent3);
-                break;
-
-            case R.id.aplus:
-                Intent intent4 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
-                intent4.putExtra("group","A+");
-                startActivity(intent4);
-                break;
-            case R.id.aminus:
-                Intent intent5 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
-                intent5.putExtra("group","A-");
-                startActivity(intent5);
-                break;
-            case R.id.abplus:
-                Intent intent6 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
-                intent6.putExtra("group","AB+");
-                startActivity(intent6);
-                break;
-            case R.id.abminus:
-                Intent intent7 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
-                intent7.putExtra("group","AB-");
-                startActivity(intent7);
-                break;
-            case R.id.bplus:
-                Intent intent8 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
-                intent8.putExtra("group","B+");
-                startActivity(intent8);
-                break;
-            case R.id.bminus:
-                Intent intent9 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
-                intent9.putExtra("group","B-");
-                startActivity(intent9);
-                break;
-            case R.id.oplus:
-                Intent intent10 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
-                intent10.putExtra("group","O+");
-                startActivity(intent10);
-                break;
-            case R.id.ominus:
-                Intent intent11 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
-                intent11.putExtra("group","O-");
-                startActivity(intent11);
-                break;
-            case R.id.profile:
-                Intent intent12 = new Intent(DashboardActivity.this, ProfileActivity.class);
-                startActivity(intent12);
-                break;
-
-            case R.id.notifications:
-                Intent intent13 = new Intent(DashboardActivity.this, NotificationActivity.class);
-                startActivity(intent13);
-                break;
-
-            case R.id.logout:
-                FirebaseAuth.getInstance().signOut();
-                Intent intent14 = new Intent(DashboardActivity.this, LoginActivity.class);
-                startActivity(intent14);
-                finish();
-                break;
-
-            case R.id.about:
-                Intent intent15 = new Intent(DashboardActivity.this, AboutActivity.class);
-                startActivity(intent15);
-                break;
+        // Using if-else instead of switch-case for navigation
+        if (id == R.id.sent_mail) {
+            // Navigate to SentEmailActivity
+            Intent intent2 = new Intent(DashboardActivity.this, SentEmailActivity.class);
+            startActivity(intent2);
+        } else if (id == R.id.compatible) {
+            // Navigate to CatogarySelectedActivity with extra data
+            Intent intent3 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
+            intent3.putExtra("group", "Compatible with me");
+            startActivity(intent3);
+        } else if (id == R.id.aplus) {
+            Intent intent4 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
+            intent4.putExtra("group", "A+");
+            startActivity(intent4);
+        } else if (id == R.id.aminus) {
+            Intent intent5 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
+            intent5.putExtra("group", "A-");
+            startActivity(intent5);
+        } else if (id == R.id.abplus) {
+            Intent intent6 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
+            intent6.putExtra("group", "AB+");
+            startActivity(intent6);
+        } else if (id == R.id.abminus) {
+            Intent intent7 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
+            intent7.putExtra("group", "AB-");
+            startActivity(intent7);
+        } else if (id == R.id.bplus) {
+            Intent intent8 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
+            intent8.putExtra("group", "B+");
+            startActivity(intent8);
+        } else if (id == R.id.bminus) {
+            Intent intent9 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
+            intent9.putExtra("group", "B-");
+            startActivity(intent9);
+        } else if (id == R.id.oplus) {
+            Intent intent10 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
+            intent10.putExtra("group", "O+");
+            startActivity(intent10);
+        } else if (id == R.id.ominus) {
+            Intent intent11 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
+            intent11.putExtra("group", "O-");
+            startActivity(intent11);
+        } else if (id == R.id.profile) {
+            // Navigate to ProfileActivity
+            Intent intent12 = new Intent(DashboardActivity.this, ProfileActivity.class);
+            startActivity(intent12);
+        } else if (id == R.id.notifications) {
+            // Navigate to NotificationActivity
+            Intent intent13 = new Intent(DashboardActivity.this, NotificationActivity.class);
+            startActivity(intent13);
+        } else if (id == R.id.logout) {
+            // Sign out and navigate to LoginActivity
+            FirebaseAuth.getInstance().signOut();
+            Intent intent14 = new Intent(DashboardActivity.this, LoginActivity.class);
+            startActivity(intent14);
+            finish(); // End the current activity
+        } else if (id == R.id.about) {
+            // Navigate to AboutActivity
+            Intent intent15 = new Intent(DashboardActivity.this, AboutActivity.class);
+            startActivity(intent15);
         }
+
+        // Close the navigation drawer
         appDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }
