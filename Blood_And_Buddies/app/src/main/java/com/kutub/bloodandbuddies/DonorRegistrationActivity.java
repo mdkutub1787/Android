@@ -40,16 +40,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DonorRegistrationActivity extends AppCompatActivity {
 
+    private TextView donorBackBtn;
     private CircleImageView profile_image;
     private TextInputEditText donorFullName, donorPhnNum, donorEmail, donorPassword;
     private Spinner bgSpinner;
     private Button donorRegBtn;
-    private TextView donorBackBtn;
 
     private Uri resultUri;
-
     private ProgressDialog loader;
-
     private FirebaseAuth userAuth;
     private DatabaseReference userDatabaseRef;
 
@@ -58,14 +56,14 @@ public class DonorRegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donor_registration);
 
+        donorBackBtn = findViewById(R.id.donorBackBtn);
         profile_image = findViewById(R.id.profile_image);
         donorFullName = findViewById(R.id.donorFullName);
         donorPhnNum = findViewById(R.id.donorPhnNum);
-        bgSpinner = findViewById(R.id.bgSpinner);
         donorEmail = findViewById(R.id.donorEmail);
+        bgSpinner = findViewById(R.id.bgSpinner);
         donorPassword = findViewById(R.id.donorPassword);
         donorRegBtn = findViewById(R.id.donorRegBtn);
-        donorBackBtn = findViewById(R.id.donorBackBtn);
 
         loader = new ProgressDialog(this);
         userAuth = FirebaseAuth.getInstance();
@@ -88,17 +86,13 @@ public class DonorRegistrationActivity extends AppCompatActivity {
                 final String email = donorEmail.getText().toString().trim();
                 final String password = donorPassword.getText().toString().trim();
 
-                // Data validation
+                // Validate inputs
                 if (TextUtils.isEmpty(fullName)) {
                     donorFullName.setError("Name is Required");
                     return;
                 }
                 if (TextUtils.isEmpty(number)) {
                     donorPhnNum.setError("Phone Number is Required");
-                    return;
-                }
-                if (number.length() < 11 || !TextUtils.isDigitsOnly(number)) {
-                    donorPhnNum.setError("Invalid Phone Number");
                     return;
                 }
                 if (bloodGroup.equals("Select Your Blood Group>")) {
@@ -109,10 +103,6 @@ public class DonorRegistrationActivity extends AppCompatActivity {
                     donorEmail.setError("Email is Required");
                     return;
                 }
-                if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    donorEmail.setError("Invalid Email Format");
-                    return;
-                }
                 if (TextUtils.isEmpty(password)) {
                     donorPassword.setError("Password is Required");
                     return;
@@ -121,7 +111,12 @@ public class DonorRegistrationActivity extends AppCompatActivity {
                     donorPassword.setError("Password must be at least 6 characters");
                     return;
                 }
+                if (resultUri == null) {
+                    Toast.makeText(DonorRegistrationActivity.this, "Profile image is required", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
+                // Proceed with registration
                 loader.setMessage("Just a moment...");
                 loader.setCanceledOnTouchOutside(false);
                 loader.show();
@@ -133,83 +128,31 @@ public class DonorRegistrationActivity extends AppCompatActivity {
                             String error = task.getException().toString();
                             Toast.makeText(DonorRegistrationActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
                             loader.dismiss();
-                            return;
-                        }
+                        } else {
+                            String currentUserId = userAuth.getCurrentUser().getUid();
+                            userDatabaseRef = FirebaseDatabase.getInstance().getReference().child("users").child(currentUserId);
 
-                        String currentUserId = userAuth.getCurrentUser().getUid();
-                        userDatabaseRef = FirebaseDatabase.getInstance().getReference().child("users").child(currentUserId);
+                            HashMap<String, Object> userInfo = new HashMap<>();
+                            userInfo.put("id", currentUserId);
+                            userInfo.put("name", fullName);
+                            userInfo.put("email", email);
+                            userInfo.put("phonenumber", number);
+                            userInfo.put("bloodgroup", bloodGroup);
+                            userInfo.put("type", "recipient");
+                            userInfo.put("search", "recipient" + bloodGroup);
 
-                        // Change here to use Map<String, Object> instead of Map<String, String>
-                        Map<String, Object> userInfo = new HashMap<>();
-                        userInfo.put("id", currentUserId);
-                        userInfo.put("name", fullName);
-                        userInfo.put("email", email);
-                        userInfo.put("phonenumber", number);
-                        userInfo.put("bloodgroup", bloodGroup);
-                        userInfo.put("type", "donor");
-                        userInfo.put("search", "donor" + bloodGroup);
-
-                        userDatabaseRef.updateChildren(userInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(DonorRegistrationActivity.this, "Data set Successful", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(DonorRegistrationActivity.this, LoginActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                } else {
-                                    Toast.makeText(DonorRegistrationActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-
-                        if (resultUri != null) {
-                            final StorageReference filePath = FirebaseStorage.getInstance().getReference().child("profile images").child(currentUserId);
-                            Bitmap bitmap = null;
-                            try {
-                                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), resultUri);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream);
-                            byte[] data = byteArrayOutputStream.toByteArray();
-                            UploadTask uploadTask = filePath.putBytes(data);
-
-                            uploadTask.addOnFailureListener(new OnFailureListener() {
+                            userDatabaseRef.updateChildren(userInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(DonorRegistrationActivity.this, "Image Upload Failed", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                    if (taskSnapshot.getMetadata() != null && taskSnapshot.getMetadata().getReference() != null) {
-                                        Task<Uri> result = taskSnapshot.getStorage().getDownloadUrl();
-                                        result.addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                            @Override
-                                            public void onSuccess(Uri uri) {
-                                                String imageUrl = uri.toString();
-                                                Map<String, Object> newImageMap = new HashMap<>();
-                                                newImageMap.put("profilepictureurl", imageUrl);
-                                                userDatabaseRef.updateChildren(newImageMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                        if (task.isSuccessful()) {
-                                                            Toast.makeText(DonorRegistrationActivity.this, "Image URL added to database successfully", Toast.LENGTH_SHORT).show();
-                                                        } else {
-                                                            Toast.makeText(DonorRegistrationActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
-                                                        }
-                                                    }
-                                                });
-                                            }
-                                        });
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        uploadProfileImage(currentUserId);
+                                    } else {
+                                        Toast.makeText(DonorRegistrationActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
+                                        loader.dismiss();
                                     }
                                 }
                             });
                         }
-                        loader.dismiss();
                     }
                 });
             }
@@ -221,6 +164,59 @@ public class DonorRegistrationActivity extends AppCompatActivity {
                 Intent intent = new Intent(DonorRegistrationActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
+            }
+        });
+    }
+
+    private void uploadProfileImage(String currentUserId) {
+        final StorageReference filePath = FirebaseStorage.getInstance().getReference().child("profile images").child(currentUserId);
+        Bitmap bitmap = null;
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), resultUri);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream);
+        byte[] data = byteArrayOutputStream.toByteArray();
+        UploadTask uploadTask = filePath.putBytes(data);
+
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(DonorRegistrationActivity.this, "Image Upload Failed", Toast.LENGTH_SHORT).show();
+                loader.dismiss();
+            }
+        });
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                if (taskSnapshot.getMetadata() != null && taskSnapshot.getMetadata().getReference() != null) {
+                    Task<Uri> result = taskSnapshot.getStorage().getDownloadUrl();
+                    result.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            String imageUrl = uri.toString();
+                            Map<String, Object> newImageMap = new HashMap<>();
+                            newImageMap.put("profilepictureurl", imageUrl);
+                            userDatabaseRef.updateChildren(newImageMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(DonorRegistrationActivity.this, "Image URL added to database successfully", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(DonorRegistrationActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
+                                    }
+                                    loader.dismiss();
+                                    Intent intent = new Intent(DonorRegistrationActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            });
+                        }
+                    });
+                }
             }
         });
     }

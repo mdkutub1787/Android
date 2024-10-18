@@ -116,7 +116,7 @@ public class RecipientRegistrationActivity extends AppCompatActivity {
                 }
 
                 // Proceed with registration
-                loader.setMessage("Just a minute...");
+                loader.setMessage("Just a moment...");
                 loader.setCanceledOnTouchOutside(false);
                 loader.show();
 
