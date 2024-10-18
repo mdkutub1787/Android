@@ -1,4 +1,4 @@
-package com.kutub.bloodandbuddies;
+package com.majorproject.bloodandbuddies;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,8 +28,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.kutub.bloodandbuddies.Adapter.UserAdapter;
-import com.kutub.bloodandbuddies.Model.User;
+import com.majorproject.bloodandbuddies.Adapter.UserAdapter;
+import com.majorproject.bloodandbuddies.Model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,21 +87,21 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String type = snapshot.child("type").getValue(String.class);
-                if(type != null) {
-                    if(type.equals("donor")){
-                        readRecipients();
-                    } else {
-                        readDonor();
-                    }
+                String type = snapshot.child("type").getValue().toString();
+                if(type.equals("donor")){
+                    readRecipients();
+                }else{
+                    readDonor();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(DashboardActivity.this, "Error fetching data", Toast.LENGTH_SHORT).show();
+
             }
         });
+
+
 
         nav_user_image = appNavigationView.getHeaderView(0).findViewById(R.id.nav_user_image);
         nav_user_name = appNavigationView.getHeaderView(0).findViewById(R.id.nav_user_name);
@@ -114,26 +114,27 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                 if(snapshot.exists()){
-                    String name = snapshot.child("name").getValue(String.class);
-                    nav_user_name.setText(name != null ? name : "");
+                    String name = snapshot.child("name").getValue().toString();
+                    nav_user_name.setText(name);
 
-                    String email = snapshot.child("email").getValue(String.class);
-                    nav_user_email.setText(email != null ? email : "");
+                    String email = snapshot.child("email").getValue().toString();
+                    nav_user_email.setText(email);
 
-                    String phonenumber = snapshot.child("phonenumber").getValue(String.class);
-                    nav_user_pnumber.setText(phonenumber != null ? phonenumber : "");
+                    String phonenumber = snapshot.child("phonenumber").getValue().toString();
+                    nav_user_pnumber.setText(phonenumber);
 
-                    String bloodgroup = snapshot.child("bloodgroup").getValue(String.class);
-                    nav_user_bloodgroup.setText(bloodgroup != null ? bloodgroup : "");
+                    String bloodgroup = snapshot.child("bloodgroup").getValue().toString();
+                    nav_user_bloodgroup.setText(bloodgroup);
 
-                    String type = snapshot.child("type").getValue(String.class);
-                    nav_user_type.setText(type != null ? type : "");
+                    String type = snapshot.child("type").getValue().toString();
+                    nav_user_type.setText(type);
 
                     if(snapshot.hasChild("profilepictureurl")){
-                        String imageUrl = snapshot.child("profilepictureurl").getValue(String.class);
+                        String imageUrl = snapshot.child("profilepictureurl").getValue().toString();
                         Glide.with(getApplicationContext()).load(imageUrl).into(nav_user_image);
-                    } else {
+                    }else{
                         nav_user_image.setImageResource(R.drawable.profile);
                     }
 
@@ -147,9 +148,11 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(DashboardActivity.this, "Error fetching user data", Toast.LENGTH_SHORT).show();
+
             }
         });
+
+
     }
 
     private void readDonor() {
@@ -174,7 +177,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(DashboardActivity.this, "Error fetching donors", Toast.LENGTH_SHORT).show();
+
             }
         });
     }
@@ -201,71 +204,88 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(DashboardActivity.this, "Error fetching recipients", Toast.LENGTH_SHORT).show();
+
             }
         });
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
+        switch (item.getItemId()){
 
-        if (id == R.id.sent_mail) {
-            Intent intent2 = new Intent(DashboardActivity.this, SentEmailActivity.class);
-            startActivity(intent2);
-        } else if (id == R.id.compatible) {
-            Intent intent3 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
-            intent3.putExtra("group", "Compatible with me");
-            startActivity(intent3);
-        } else if (id == R.id.aplus) {
-            Intent intent4 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
-            intent4.putExtra("group", "A+");
-            startActivity(intent4);
-        } else if (id == R.id.aminus) {
-            Intent intent5 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
-            intent5.putExtra("group", "A-");
-            startActivity(intent5);
-        } else if (id == R.id.abplus) {
-            Intent intent6 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
-            intent6.putExtra("group", "AB+");
-            startActivity(intent6);
-        } else if (id == R.id.abminus) {
-            Intent intent7 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
-            intent7.putExtra("group", "AB-");
-            startActivity(intent7);
-        } else if (id == R.id.bplus) {
-            Intent intent8 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
-            intent8.putExtra("group", "B+");
-            startActivity(intent8);
-        } else if (id == R.id.bminus) {
-            Intent intent9 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
-            intent9.putExtra("group", "B-");
-            startActivity(intent9);
-        } else if (id == R.id.oplus) {
-            Intent intent10 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
-            intent10.putExtra("group", "O+");
-            startActivity(intent10);
-        } else if (id == R.id.ominus) {
-            Intent intent11 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
-            intent11.putExtra("group", "O-");
-            startActivity(intent11);
-        } else if (id == R.id.logout) {
-            FirebaseAuth.getInstance().signOut();
-            Intent intent = new Intent(DashboardActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
+            case R.id.sent_mail:
+                Intent intent2 = new Intent(DashboardActivity.this, SentEmailActivity.class);
+                startActivity(intent2);
+                break;
+            case R.id.compatible:
+                Intent intent3 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
+                intent3.putExtra("group","Compatible with me");
+                startActivity(intent3);
+                break;
+
+            case R.id.aplus:
+                Intent intent4 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
+                intent4.putExtra("group","A+");
+                startActivity(intent4);
+                break;
+            case R.id.aminus:
+                Intent intent5 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
+                intent5.putExtra("group","A-");
+                startActivity(intent5);
+                break;
+            case R.id.abplus:
+                Intent intent6 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
+                intent6.putExtra("group","AB+");
+                startActivity(intent6);
+                break;
+            case R.id.abminus:
+                Intent intent7 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
+                intent7.putExtra("group","AB-");
+                startActivity(intent7);
+                break;
+            case R.id.bplus:
+                Intent intent8 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
+                intent8.putExtra("group","B+");
+                startActivity(intent8);
+                break;
+            case R.id.bminus:
+                Intent intent9 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
+                intent9.putExtra("group","B-");
+                startActivity(intent9);
+                break;
+            case R.id.oplus:
+                Intent intent10 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
+                intent10.putExtra("group","O+");
+                startActivity(intent10);
+                break;
+            case R.id.ominus:
+                Intent intent11 = new Intent(DashboardActivity.this, CatogarySelectedActivity.class);
+                intent11.putExtra("group","O-");
+                startActivity(intent11);
+                break;
+            case R.id.profile:
+                Intent intent12 = new Intent(DashboardActivity.this, ProfileActivity.class);
+                startActivity(intent12);
+                break;
+
+            case R.id.notifications:
+                Intent intent13 = new Intent(DashboardActivity.this, NotificationActivity.class);
+                startActivity(intent13);
+                break;
+
+            case R.id.logout:
+                FirebaseAuth.getInstance().signOut();
+                Intent intent14 = new Intent(DashboardActivity.this, LoginActivity.class);
+                startActivity(intent14);
+                finish();
+                break;
+
+            case R.id.about:
+                Intent intent15 = new Intent(DashboardActivity.this, AboutActivity.class);
+                startActivity(intent15);
+                break;
         }
-
         appDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (appDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-            appDrawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
     }
 }
