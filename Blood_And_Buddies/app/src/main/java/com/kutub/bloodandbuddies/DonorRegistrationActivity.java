@@ -209,7 +209,7 @@ public class DonorRegistrationActivity extends AppCompatActivity {
                                         Toast.makeText(DonorRegistrationActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
                                     }
                                     loader.dismiss();
-                                    Intent intent = new Intent(DonorRegistrationActivity.this, MainActivity.class);
+                                    Intent intent = new Intent(DonorRegistrationActivity.this, DashboardActivity.class);
                                     startActivity(intent);
                                     finish();
                                 }

@@ -208,7 +208,7 @@ public class RecipientRegistrationActivity extends AppCompatActivity {
                                         Toast.makeText(RecipientRegistrationActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
                                     }
                                     loader.dismiss();
-                                    Intent intent = new Intent(RecipientRegistrationActivity.this, MainActivity.class);
+                                    Intent intent = new Intent(RecipientRegistrationActivity.this, DashboardActivity.class);
                                     startActivity(intent);
                                     finish();
                                 }
