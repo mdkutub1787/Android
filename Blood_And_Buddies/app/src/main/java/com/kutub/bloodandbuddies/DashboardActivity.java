@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -281,5 +282,47 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         appDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    
+    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        if (dataSnapshot.exists()) {
+            // Retrieve user type
+            String type = dataSnapshot.child("type").getValue(String.class);
+            if (type != null) { // Check if type is not null
+                // Handle user type
+                if (type.equals("donor")) {
+                    readRecipients();
+                } else {
+                    readDonor();
+                }
+
+                // Assuming you have fields for latitude and longitude
+                Double latitude = dataSnapshot.child("location").child("latitude").getValue(Double.class);
+                Double longitude = dataSnapshot.child("location").child("longitude").getValue(Double.class);
+
+                if (latitude != null && longitude != null) {
+                    Log.d("DashboardActivity", "Latitude: " + latitude + ", Longitude: " + longitude);
+
+                    // Start MainActivity and pass latitude and longitude
+                    Intent intent = new Intent(DashboardActivity.this, MainActivity.class);
+                    intent.putExtra("latitude", latitude);
+                    intent.putExtra("longitude", longitude);
+                    startActivity(intent);
+                } else {
+                    Log.e("DashboardActivity", "Latitude or Longitude is null");
+                    Toast.makeText(DashboardActivity.this, "Location data is incomplete", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                // Handle the case where type is null
+                Log.e("DashboardActivity", "User type is null");
+                Toast.makeText(DashboardActivity.this, "User type is not available.", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            // Handle the case where snapshot does not exist
+            Log.e("DashboardActivity", "Snapshot does not exist for the user.");
+            Toast.makeText(DashboardActivity.this, "User data not found.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
 }
