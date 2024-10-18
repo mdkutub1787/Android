@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -64,7 +65,6 @@ public class DonorRegistrationActivity extends AppCompatActivity {
         donorEmail = findViewById(R.id.donorEmail);
         donorPassword = findViewById(R.id.donorPassword);
         donorRegBtn = findViewById(R.id.donorRegBtn);
-
         donorBackBtn = findViewById(R.id.donorBackBtn);
 
         loader = new ProgressDialog(this);
@@ -88,124 +88,130 @@ public class DonorRegistrationActivity extends AppCompatActivity {
                 final String email = donorEmail.getText().toString().trim();
                 final String password = donorPassword.getText().toString().trim();
 
-                if (TextUtils.isEmpty(fullName)){
+                // Data validation
+                if (TextUtils.isEmpty(fullName)) {
                     donorFullName.setError("Name is Required");
                     return;
                 }
-                if (TextUtils.isEmpty(number)){
+                if (TextUtils.isEmpty(number)) {
                     donorPhnNum.setError("Phone Number is Required");
                     return;
                 }
-                if (bloodGroup.equals("Select Your Blood Group>")){
+                if (number.length() < 11 || !TextUtils.isDigitsOnly(number)) {
+                    donorPhnNum.setError("Invalid Phone Number");
+                    return;
+                }
+                if (bloodGroup.equals("Select Your Blood Group>")) {
                     Toast.makeText(DonorRegistrationActivity.this, "Select Blood Group", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (TextUtils.isEmpty(email)){
+                if (TextUtils.isEmpty(email)) {
                     donorEmail.setError("Email is Required");
                     return;
                 }
-                if (TextUtils.isEmpty(password)){
+                if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    donorEmail.setError("Invalid Email Format");
+                    return;
+                }
+                if (TextUtils.isEmpty(password)) {
                     donorPassword.setError("Password is Required");
                     return;
-                }else {
-                    loader.setMessage("Just a moment...");
-                    loader.setCanceledOnTouchOutside(false);
-                    loader.show();
+                }
+                if (password.length() < 6) {
+                    donorPassword.setError("Password must be at least 6 characters");
+                    return;
+                }
 
-                    userAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(!task.isSuccessful()) {
-                                String error = task.getException().toString();
-                                Toast.makeText(DonorRegistrationActivity.this, "Error" + error, Toast.LENGTH_SHORT).show();
-                            }else {
-                                String currentUserId = userAuth.getCurrentUser().getUid();
-                                userDatabaseRef = FirebaseDatabase.getInstance().getReference().child("users").child(currentUserId);
+                loader.setMessage("Just a moment...");
+                loader.setCanceledOnTouchOutside(false);
+                loader.show();
 
-                                HashMap userInfo = new HashMap();
-                                userInfo.put("id", currentUserId);
-                                userInfo.put("name", fullName);
-                                userInfo.put("email", email);
-                                userInfo.put("phonenumber", number);
-                                userInfo.put("bloodgroup", bloodGroup);
-                                userInfo.put("type", "donor");
-                                userInfo.put("search", "donor" + bloodGroup);
+                userAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (!task.isSuccessful()) {
+                            String error = task.getException().toString();
+                            Toast.makeText(DonorRegistrationActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
+                            loader.dismiss();
+                            return;
+                        }
 
-                                userDatabaseRef.updateChildren(userInfo).addOnCompleteListener(new OnCompleteListener() {
-                                    @Override
-                                    public void onComplete(@NonNull Task task) {
+                        String currentUserId = userAuth.getCurrentUser().getUid();
+                        userDatabaseRef = FirebaseDatabase.getInstance().getReference().child("users").child(currentUserId);
 
-                                        if(task.isSuccessful()){
-                                            Toast.makeText(DonorRegistrationActivity.this, "Data set Successful", Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(DonorRegistrationActivity.this, LoginActivity.class);
-                                            startActivity(intent);
-                                            finish();
-                                        }else{
-                                            Toast.makeText(DonorRegistrationActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
-                                        }
+                        // Change here to use Map<String, Object> instead of Map<String, String>
+                        Map<String, Object> userInfo = new HashMap<>();
+                        userInfo.put("id", currentUserId);
+                        userInfo.put("name", fullName);
+                        userInfo.put("email", email);
+                        userInfo.put("phonenumber", number);
+                        userInfo.put("bloodgroup", bloodGroup);
+                        userInfo.put("type", "donor");
+                        userInfo.put("search", "donor" + bloodGroup);
 
-                                        finish();
-                                    }
-                                });
+                        userDatabaseRef.updateChildren(userInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(DonorRegistrationActivity.this, "Data set Successful", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(DonorRegistrationActivity.this, LoginActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    Toast.makeText(DonorRegistrationActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
 
-                                if(resultUri !=null){
+                        if (resultUri != null) {
+                            final StorageReference filePath = FirebaseStorage.getInstance().getReference().child("profile images").child(currentUserId);
+                            Bitmap bitmap = null;
+                            try {
+                                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), resultUri);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream);
+                            byte[] data = byteArrayOutputStream.toByteArray();
+                            UploadTask uploadTask = filePath.putBytes(data);
 
-                                    final StorageReference filePath = FirebaseStorage.getInstance().getReference().child("profile images").child(currentUserId);
-                                    Bitmap bitmap = null;
-                                    try {
-                                        bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), resultUri);
-
-                                    }catch (IOException e){
-                                        e.printStackTrace();
-                                    }
-                                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                                    bitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream);
-                                    byte[] data = byteArrayOutputStream.toByteArray();
-                                    UploadTask uploadTask = filePath.putBytes(data);
-
-                                    uploadTask.addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Toast.makeText(DonorRegistrationActivity.this, "Image Upload Failed", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                    uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                        @Override
-                                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                                            if(taskSnapshot.getMetadata() != null && taskSnapshot.getMetadata().getReference() != null){
-                                                Task<Uri> result = taskSnapshot.getStorage().getDownloadUrl();
-                                                result.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            uploadTask.addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(DonorRegistrationActivity.this, "Image Upload Failed", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    if (taskSnapshot.getMetadata() != null && taskSnapshot.getMetadata().getReference() != null) {
+                                        Task<Uri> result = taskSnapshot.getStorage().getDownloadUrl();
+                                        result.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+                                                String imageUrl = uri.toString();
+                                                Map<String, Object> newImageMap = new HashMap<>();
+                                                newImageMap.put("profilepictureurl", imageUrl);
+                                                userDatabaseRef.updateChildren(newImageMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                     @Override
-                                                    public void onSuccess(Uri uri) {
-                                                        String imageUrl = uri.toString();
-                                                        Map newImageMap = new HashMap();
-                                                        newImageMap.put("profilepictureurl", imageUrl);
-                                                        userDatabaseRef.updateChildren(newImageMap).addOnCompleteListener(new OnCompleteListener() {
-                                                            @Override
-                                                            public void onComplete(@NonNull Task task) {
-                                                                if(task.isSuccessful()){
-                                                                    Toast.makeText(DonorRegistrationActivity.this, "Image url add to database successfully", Toast.LENGTH_SHORT).show();
-                                                                }else{
-                                                                    Toast.makeText(DonorRegistrationActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
-                                                                }
-                                                            }
-                                                        });
-                                                        finish();
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if (task.isSuccessful()) {
+                                                            Toast.makeText(DonorRegistrationActivity.this, "Image URL added to database successfully", Toast.LENGTH_SHORT).show();
+                                                        } else {
+                                                            Toast.makeText(DonorRegistrationActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
+                                                        }
                                                     }
                                                 });
                                             }
-                                        }
-                                    });
-                                    Intent intent = new Intent(DonorRegistrationActivity.this, MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                    loader.dismiss();
+                                        });
+                                    }
                                 }
-                            }
+                            });
                         }
-                    });
-                }
+                        loader.dismiss();
+                    }
+                });
             }
         });
 
@@ -218,10 +224,11 @@ public class DonorRegistrationActivity extends AppCompatActivity {
             }
         });
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK && data != null){
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
             resultUri = data.getData();
             profile_image.setImageURI(resultUri);
         }
