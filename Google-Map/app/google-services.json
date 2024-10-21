@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "124054404265",
+    "firebase_url": "https://map-c9399-default-rtdb.firebaseio.com",
+    "project_id": "map-c9399",
+    "storage_bucket": "map-c9399.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:124054404265:android:276a9eaedfbf436a193db8",
+        "android_client_info": {
+          "package_name": "com.kutub.googlemap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "124054404265-v1bepkne0sb22ndcl6o6k707qbdgjkko.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfhwKsyJHofEJsfG3UKX1E4dfDdHYXpxU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "124054404265-v1bepkne0sb22ndcl6o6k707qbdgjkko.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
